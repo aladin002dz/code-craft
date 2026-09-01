@@ -20,7 +20,7 @@ export const Card: React.FC<CardProps> = ({
   glowColor = 'none',
 }) => {
   const glowStyles = {
-    none: '',
+    none: 'hover:border-slate-700 hover:shadow-[0_0_24px_rgba(148,163,184,0.08)]',
     cyan: 'hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]',
     emerald: 'hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]',
     purple: 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]',
@@ -30,7 +30,7 @@ export const Card: React.FC<CardProps> = ({
 
   return (
     <div
-      className={`rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md p-6 transition-all duration-300 ${glowStyles[glowColor]} ${className}`}
+      className={`rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md p-6 transition-all duration-300 ease-out hover:-translate-y-1 ${glowStyles[glowColor]} ${className}`}
     >
       {(title || icon || badge) && (
         <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-slate-800/60">
