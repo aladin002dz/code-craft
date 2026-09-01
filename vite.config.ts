@@ -4,5 +4,5 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: './', // Ensures assets load correctly on GitHub Pages and custom subpaths
+  base: '/code-craft/', // Set base path for GitHub Pages repo: https://aladin002dz.github.io/code-craft/
 })
