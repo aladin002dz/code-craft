@@ -34,11 +34,11 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
   const lines = code.trim().split('\n');
 
   return (
-    <div className={`rounded-xl border border-slate-800 bg-slate-950/90 overflow-hidden text-sm shadow-xl ${className}`}>
+    <div className={`rounded-lg border border-slate-800 bg-slate-950 overflow-hidden text-sm ${className}`}>
       {/* Code Header Bar */}
-      <div className="flex items-center justify-between px-4 py-2 bg-slate-900/90 border-b border-slate-800 text-xs text-slate-400">
+      <div className="flex items-center justify-between px-4 py-2 bg-slate-900/60 border-b border-slate-800 text-xs text-slate-500">
         <div className="flex items-center gap-2 font-mono">
-          <Terminal className="w-3.5 h-3.5 text-cyan-400" />
+          <Terminal className="w-3.5 h-3.5 text-slate-500" />
           <span>{filename || `${language.toUpperCase()}`}</span>
         </div>
         <button

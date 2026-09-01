@@ -33,21 +33,21 @@ export const CustomHooksApp: React.FC = () => {
       
       {/* Interactive Custom Hooks Playground */}
       <div className="lg:col-span-7 space-y-4">
-        <RenderFlashingBox label="CustomHooksPlayground" flashColor="emerald" className="bg-slate-950">
+        <RenderFlashingBox label="CustomHooksPlayground" flashColor="emerald">
           <div className="space-y-6">
             
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <Box className="w-5 h-5 text-emerald-400" />
-                <h3 className="font-bold text-white text-base">Custom Hook Encapsulation</h3>
+                <h3 className="font-semibold text-white text-base">Custom Hook Encapsulation</h3>
               </div>
               <Badge variant="emerald">Clean Architecture</Badge>
             </div>
 
             {/* useToggle Demonstration */}
-            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
-              <div className="text-xs font-mono font-bold text-cyan-300 uppercase">
+            <div className="p-4 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+              <div className="text-xs font-mono font-semibold text-cyan-300 uppercase">
                 1. useToggle() Hook Demo
               </div>
               <div className="flex flex-wrap items-center gap-4">
@@ -56,7 +56,7 @@ export const CustomHooksApp: React.FC = () => {
                     playTone('step');
                     toggleDarkMode();
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-xs font-semibold transition-all ${
                     isDarkMode ? 'bg-cyan-950 border-cyan-500/50 text-cyan-300' : 'bg-slate-800 border-slate-700 text-slate-300'
                   }`}
                 >
@@ -69,7 +69,7 @@ export const CustomHooksApp: React.FC = () => {
                     playTone('step');
                     toggleModal();
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg border text-xs font-semibold transition-all ${
                     isModalOpen ? 'bg-purple-950 border-purple-500/50 text-purple-300' : 'bg-slate-800 border-slate-700 text-slate-300'
                   }`}
                 >
@@ -80,12 +80,12 @@ export const CustomHooksApp: React.FC = () => {
             </div>
 
             {/* useCounter Demonstration */}
-            <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-3">
-              <div className="text-xs font-mono font-bold text-emerald-300 uppercase">
+            <div className="p-4 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+              <div className="text-xs font-mono font-semibold text-emerald-300 uppercase">
                 2. useCounter() Hook Demo (Step 5, Range 0-50)
               </div>
               <div className="flex items-center gap-4">
-                <div className="text-3xl font-mono font-black text-emerald-400 w-16">
+                <div className="text-3xl font-mono font-semibold text-emerald-400 w-16">
                   {counterA.count}
                 </div>
                 <div className="flex items-center gap-2">
@@ -129,8 +129,8 @@ export const CustomHooksApp: React.FC = () => {
 
       {/* Code Blueprint */}
       <div className="lg:col-span-5 space-y-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+        <div className="p-5 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-emerald-400 font-semibold text-sm">
             <Sparkles className="w-4 h-4" />
             <span>Building Custom Hooks</span>
           </div>

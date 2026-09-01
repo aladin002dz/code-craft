@@ -33,7 +33,7 @@ export const RenderFlashingBox: React.FC<RenderFlashingBoxProps> = ({
       isFirstRender.current = false;
       const timer = setTimeout(() => {
         setIsFlashing(false);
-      }, 600);
+      }, 500);
       return () => clearTimeout(timer);
     }
     // Only react to an actual re-render of the wrapped content (new `children`)
@@ -42,46 +42,38 @@ export const RenderFlashingBox: React.FC<RenderFlashingBoxProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children, renderFlashEnabled]);
 
+  const active = isFlashing && renderFlashEnabled;
+
   const colorStyles = {
-    cyan: isFlashing && renderFlashEnabled
-      ? 'border-cyan-400 ring-4 ring-cyan-400/40 shadow-[0_0_20px_rgba(6,182,212,0.4)]'
-      : 'border-slate-800',
-    emerald: isFlashing && renderFlashEnabled
-      ? 'border-emerald-400 ring-4 ring-emerald-400/40 shadow-[0_0_20px_rgba(16,185,129,0.4)]'
-      : 'border-slate-800',
-    amber: isFlashing && renderFlashEnabled
-      ? 'border-amber-400 ring-4 ring-amber-400/40 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
-      : 'border-slate-800',
-    purple: isFlashing && renderFlashEnabled
-      ? 'border-purple-400 ring-4 ring-purple-400/40 shadow-[0_0_20px_rgba(168,85,247,0.4)]'
-      : 'border-slate-800',
-    rose: isFlashing && renderFlashEnabled
-      ? 'border-rose-400 ring-4 ring-rose-400/40 shadow-[0_0_20px_rgba(244,63,94,0.4)]'
-      : 'border-slate-800',
+    cyan: active ? 'border-cyan-400' : 'border-slate-800',
+    emerald: active ? 'border-emerald-400' : 'border-slate-800',
+    amber: active ? 'border-amber-400' : 'border-slate-800',
+    purple: active ? 'border-purple-400' : 'border-slate-800',
+    rose: active ? 'border-rose-400' : 'border-slate-800',
   };
 
-  const badgeColorStyles = {
-    cyan: 'bg-cyan-950/80 text-cyan-300 border-cyan-800/80',
-    emerald: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/80',
-    amber: 'bg-amber-950/80 text-amber-300 border-amber-800/80',
-    purple: 'bg-purple-950/80 text-purple-300 border-purple-800/80',
-    rose: 'bg-rose-950/80 text-rose-300 border-rose-800/80',
+  const textStyles = {
+    cyan: 'text-cyan-400',
+    emerald: 'text-emerald-400',
+    amber: 'text-amber-400',
+    purple: 'text-purple-400',
+    rose: 'text-rose-400',
   };
 
   return (
     <div
-      className={`relative rounded-xl border transition-all duration-300 ${colorStyles[flashColor]} ${className}`}
+      className={`relative rounded-lg border transition-colors duration-300 ${colorStyles[flashColor]} ${className}`}
     >
       {/* Top Header bar with Render Count indicator */}
       {(label || showCounter) && (
-        <div className="flex items-center justify-between px-3 py-1.5 bg-slate-900/90 border-b border-slate-800/80 rounded-t-xl text-xs">
-          <span className="font-mono text-slate-300 font-semibold flex items-center gap-1.5">
-            <span className={`w-2 h-2 rounded-full ${isFlashing && renderFlashEnabled ? 'bg-cyan-400 animate-ping' : 'bg-slate-600'}`} />
+        <div className="flex items-center justify-between px-3 py-1.5 border-b border-slate-800 text-xs">
+          <span className="font-mono text-slate-400 font-medium flex items-center gap-1.5">
+            <span className={`w-1.5 h-1.5 rounded-full transition-colors ${active ? textStyles[flashColor].replace('text-', 'bg-') : 'bg-slate-700'}`} />
             {label || 'Component'}
           </span>
           {showCounter && (
-            <div className={`flex items-center gap-1 px-2 py-0.5 rounded-full border text-[11px] font-mono font-bold transition-all ${badgeColorStyles[flashColor]}`}>
-              <Activity className={`w-3 h-3 ${isFlashing && renderFlashEnabled ? 'animate-spin' : ''}`} />
+            <div className={`flex items-center gap-1 text-[11px] font-mono transition-colors ${active ? textStyles[flashColor] : 'text-slate-500'}`}>
+              <Activity className="w-3 h-3" />
               <span>Renders: {renderCountRef.current}</span>
             </div>
           )}

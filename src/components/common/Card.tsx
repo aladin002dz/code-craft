@@ -7,7 +7,8 @@ interface CardProps {
   icon?: React.ReactNode;
   badge?: React.ReactNode;
   className?: string;
-  glowColor?: 'cyan' | 'emerald' | 'purple' | 'amber' | 'rose' | 'none';
+  /** Optional 2px accent rule shown on the card's leading edge. */
+  accent?: 'cyan' | 'emerald' | 'purple' | 'amber' | 'rose' | 'indigo' | 'teal' | 'none';
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -17,28 +18,32 @@ export const Card: React.FC<CardProps> = ({
   icon,
   badge,
   className = '',
-  glowColor = 'none',
+  accent = 'none',
 }) => {
-  const glowStyles = {
-    none: 'hover:border-slate-700 hover:shadow-[0_0_24px_rgba(148,163,184,0.08)]',
-    cyan: 'hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]',
-    emerald: 'hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]',
-    purple: 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]',
-    amber: 'hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]',
-    rose: 'hover:border-rose-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.15)]',
+  const accentStyles = {
+    none: '',
+    cyan: 'before:bg-cyan-500',
+    emerald: 'before:bg-emerald-500',
+    purple: 'before:bg-purple-500',
+    amber: 'before:bg-amber-500',
+    rose: 'before:bg-rose-500',
+    indigo: 'before:bg-indigo-500',
+    teal: 'before:bg-teal-500',
   };
 
   return (
     <div
-      className={`rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md p-6 transition-all duration-300 ease-out hover:-translate-y-1 ${glowStyles[glowColor]} ${className}`}
+      className={`relative rounded-lg border border-slate-800 bg-slate-900/40 p-6 transition-colors duration-200 hover:border-slate-700 ${
+        accent !== 'none' ? `pl-[calc(1.5rem+2px)] before:absolute before:inset-y-0 before:left-0 before:w-[2px] before:rounded-l-lg rtl:before:left-auto rtl:before:right-0 ${accentStyles[accent]}` : ''
+      } ${className}`}
     >
       {(title || icon || badge) && (
-        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-slate-800/60">
-          <div className="flex items-center gap-3">
-            {icon && <div className="p-2 rounded-xl bg-slate-800/80 text-cyan-400">{icon}</div>}
+        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-slate-800">
+          <div className="flex items-center gap-2.5">
+            {icon && <span className="text-slate-500">{icon}</span>}
             <div>
-              {title && <h3 className="text-lg font-bold text-slate-100">{title}</h3>}
-              {subtitle && <p className="text-sm text-slate-400 mt-0.5">{subtitle}</p>}
+              {title && <h3 className="text-base font-semibold text-slate-100">{title}</h3>}
+              {subtitle && <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>}
             </div>
           </div>
           {badge && <div>{badge}</div>}

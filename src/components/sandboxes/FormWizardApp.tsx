@@ -76,16 +76,16 @@ export const FormWizardApp: React.FC = () => {
       
       {/* Wizard Form Widget */}
       <div className="lg:col-span-7 space-y-4">
-        <RenderFlashingBox label="FormWizardComponent" flashColor="purple" className="bg-slate-950">
+        <RenderFlashingBox label="FormWizardComponent" flashColor="purple">
           <div className="space-y-6">
             
             {/* Step Indicators */}
             <div className="flex items-center justify-between">
               {[1, 2, 3].map(i => (
                 <div key={i} className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono font-bold transition-all ${
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono font-semibold transition-all ${
                     step === i
-                      ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/30 ring-2 ring-purple-400/40'
+                      ? 'bg-purple-500 text-white ring-2 ring-purple-400/40'
                       : step > i
                       ? 'bg-emerald-500 text-slate-950'
                       : 'bg-slate-800 text-slate-400'
@@ -104,7 +104,7 @@ export const FormWizardApp: React.FC = () => {
               <div className="space-y-4">
                 {step === 1 && (
                   <div className="space-y-3 animate-fadeIn">
-                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
                       <User className="w-4 h-4 text-purple-400" />
                       <span>Step 1: Account Information</span>
                     </h4>
@@ -116,7 +116,7 @@ export const FormWizardApp: React.FC = () => {
                         value={formData.username}
                         onChange={handleInputChange}
                         placeholder="e.g. react_ninja"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
                       />
                     </div>
                     <div>
@@ -127,7 +127,7 @@ export const FormWizardApp: React.FC = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         placeholder="dev@example.com"
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
                       />
                     </div>
                   </div>
@@ -135,7 +135,7 @@ export const FormWizardApp: React.FC = () => {
 
                 {step === 2 && (
                   <div className="space-y-3 animate-fadeIn">
-                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
                       <Shield className="w-4 h-4 text-purple-400" />
                       <span>Step 2: Professional Profile</span>
                     </h4>
@@ -145,7 +145,7 @@ export const FormWizardApp: React.FC = () => {
                         name="role"
                         value={formData.role}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
                       >
                         <option value="Frontend Engineer">Frontend Engineer</option>
                         <option value="Fullstack Engineer">Fullstack Engineer</option>
@@ -159,7 +159,7 @@ export const FormWizardApp: React.FC = () => {
                         name="experience"
                         value={formData.experience}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
+                        className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-purple-400"
                       >
                         <option value="Beginner (< 1 yr)">Beginner (&lt; 1 yr)</option>
                         <option value="Intermediate (2-4 yrs)">Intermediate (2-4 yrs)</option>
@@ -181,16 +181,16 @@ export const FormWizardApp: React.FC = () => {
 
                 {step === 3 && (
                   <div className="space-y-3 animate-fadeIn">
-                    <h4 className="text-sm font-bold text-white flex items-center gap-2">
+                    <h4 className="text-sm font-semibold text-white flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-emerald-400" />
                       <span>Step 3: Review & Submit</span>
                     </h4>
-                    <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2 text-xs font-mono">
-                      <div><span className="text-slate-500">Username:</span> <span className="text-white font-bold">{formData.username || '(None)'}</span></div>
-                      <div><span className="text-slate-500">Email:</span> <span className="text-white font-bold">{formData.email || '(None)'}</span></div>
-                      <div><span className="text-slate-500">Role:</span> <span className="text-purple-300 font-bold">{formData.role}</span></div>
-                      <div><span className="text-slate-500">Experience:</span> <span className="text-purple-300 font-bold">{formData.experience}</span></div>
-                      <div><span className="text-slate-500">Newsletter:</span> <span className="text-emerald-400 font-bold">{formData.newsletter ? 'Yes' : 'No'}</span></div>
+                    <div className="p-4 rounded-lg bg-slate-900 border border-slate-800 space-y-2 text-xs font-mono">
+                      <div><span className="text-slate-500">Username:</span> <span className="text-white font-semibold">{formData.username || '(None)'}</span></div>
+                      <div><span className="text-slate-500">Email:</span> <span className="text-white font-semibold">{formData.email || '(None)'}</span></div>
+                      <div><span className="text-slate-500">Role:</span> <span className="text-purple-300 font-semibold">{formData.role}</span></div>
+                      <div><span className="text-slate-500">Experience:</span> <span className="text-purple-300 font-semibold">{formData.experience}</span></div>
+                      <div><span className="text-slate-500">Newsletter:</span> <span className="text-emerald-400 font-semibold">{formData.newsletter ? 'Yes' : 'No'}</span></div>
                     </div>
                   </div>
                 )}
@@ -201,7 +201,7 @@ export const FormWizardApp: React.FC = () => {
                     <button
                       type="button"
                       onClick={handlePrevStep}
-                      className="flex items-center gap-1 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                      className="flex items-center gap-1 px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
                     >
                       <ChevronLeft className="w-4 h-4" />
                       <span>Back</span>
@@ -212,7 +212,7 @@ export const FormWizardApp: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleNextStep}
-                      className="flex items-center gap-1 px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow-lg shadow-purple-600/30"
+                      className="flex items-center gap-1 px-5 py-2 rounded-lg bg-purple-500 hover:bg-purple-400 text-slate-950 text-xs font-semibold"
                     >
                       <span>Next Step</span>
                       <ChevronRight className="w-4 h-4" />
@@ -221,7 +221,7 @@ export const FormWizardApp: React.FC = () => {
                     <button
                       type="button"
                       onClick={handleSubmit}
-                      className="flex items-center gap-1.5 px-6 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 text-xs font-black shadow-lg shadow-emerald-500/30"
+                      className="flex items-center gap-1.5 px-6 py-2 rounded-lg bg-emerald-400 hover:bg-emerald-300 text-slate-950 text-xs font-semibold"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Submit Form</span>
@@ -234,13 +234,13 @@ export const FormWizardApp: React.FC = () => {
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
                   <CheckCircle className="w-6 h-6" />
                 </div>
-                <h4 className="text-lg font-bold text-white">Form Successfully Submitted!</h4>
+                <h4 className="text-lg font-semibold text-white">Form Successfully Submitted!</h4>
                 <p className="text-xs text-slate-400 max-w-xs mx-auto">
                   State was preserved across all 3 steps in a single cohesive object.
                 </p>
                 <button
                   onClick={handleReset}
-                  className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
+                  className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold"
                 >
                   Start Over
                 </button>
@@ -253,8 +253,8 @@ export const FormWizardApp: React.FC = () => {
 
       {/* Code Inspector */}
       <div className="lg:col-span-5 space-y-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
+        <div className="p-5 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-purple-400 font-semibold text-sm">
             <Sparkles className="w-4 h-4" />
             <span>Consolidated Form Handler Pattern</span>
           </div>

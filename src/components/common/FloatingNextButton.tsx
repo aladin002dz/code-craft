@@ -67,9 +67,9 @@ export const FloatingNextButton: React.FC = () => {
     <button
       onClick={() => goTo(nextChapter.id)}
       aria-label={`${t.footer.next}: ${nextChapter.shortTitle}`}
-      className={`fixed bottom-6 z-30 flex items-center gap-2 pl-4 pr-3 py-3 rounded-full font-bold text-sm shadow-2xl border transition-all duration-300 ${
+      className={`fixed bottom-6 z-30 flex items-center gap-2 pl-4 pr-3.5 py-2.5 rounded-md bg-slate-900 border text-sm font-medium shadow-lg transition-all duration-300 hover:bg-slate-800 ${
         visible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
-      } ${isRTL ? 'left-6' : 'right-6'} ${colors.badgeBg} ${colors.badgeText} ${colors.badgeBorder} ${colors.badgeGlow} hover:brightness-110 backdrop-blur-md`}
+      } ${isRTL ? 'left-6' : 'right-6'} ${colors.text} border-slate-700`}
     >
       <span className="hidden sm:inline">{nextChapter.shortTitle}</span>
       {isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
