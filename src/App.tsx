@@ -1,0 +1,43 @@
+import React from 'react';
+import { ProgressProvider, useProgress } from './context/ProgressContext';
+import { Header } from './components/common/Header';
+import { Footer } from './components/common/Footer';
+import { Chapter1WhyState } from './components/chapters/Chapter1WhyState';
+import { Chapter2Anatomy } from './components/chapters/Chapter2Anatomy';
+import { Chapter3SnapshotQueue } from './components/chapters/Chapter3SnapshotQueue';
+import { Chapter4FiberLinkedList } from './components/chapters/Chapter4FiberLinkedList';
+import { Chapter5ComplexState } from './components/chapters/Chapter5ComplexState';
+import { Chapter6Sandboxes } from './components/chapters/Chapter6Sandboxes';
+import { Chapter7Quiz } from './components/chapters/Chapter7Quiz';
+
+const MainContent: React.FC = () => {
+  const { currentChapter } = useProgress();
+
+  return (
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      {currentChapter === 'why-state' && <Chapter1WhyState />}
+      {currentChapter === 'anatomy' && <Chapter2Anatomy />}
+      {currentChapter === 'snapshot-queue' && <Chapter3SnapshotQueue />}
+      {currentChapter === 'fiber-hooks' && <Chapter4FiberLinkedList />}
+      {currentChapter === 'complex-state' && <Chapter5ComplexState />}
+      {currentChapter === 'interactive-labs' && <Chapter6Sandboxes />}
+      {currentChapter === 'quiz' && <Chapter7Quiz />}
+    </main>
+  );
+};
+
+function App() {
+  return (
+    <ProgressProvider>
+      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-slate-950">
+        <Header />
+        <div className="flex-1">
+          <MainContent />
+        </div>
+        <Footer />
+      </div>
+    </ProgressProvider>
+  );
+}
+
+export default App;
