@@ -1,8 +1,29 @@
 {
-  "name": "intaracitve-animated-expanation-react-usestate",
+  "name": "react-usestate-visual-guide",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "An interactive, animated guide to React state & useState — from mental models to Fiber internals.",
+  "author": "aladin002dz",
+  "license": "MIT",
+  "homepage": "https://aladin002dz.github.io/code-craft/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aladin002dz/code-craft.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aladin002dz/code-craft/issues"
+  },
+  "keywords": [
+    "react",
+    "usestate",
+    "react-hooks",
+    "typescript",
+    "vite",
+    "tailwindcss",
+    "interactive-learning",
+    "education"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
