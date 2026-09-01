@@ -7,6 +7,21 @@
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
+  /* Headings get a distinct display face for more character than plain
+     Inter — Space Grotesk has no Arabic glyphs, so Arabic headings fall
+     through to Cairo automatically (same as before) while Latin headings
+     pick up the new face. */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Cairo', 'Inter', system-ui, sans-serif;
+  }
+
+  /* Slightly more generous measure for prose paragraphs — the utility
+     classes on individual elements (color, size, weight) still win since
+     Tailwind's utility layer loads after this base layer. */
+  p {
+    line-height: 1.65;
+  }
+
   /* Custom scrollbars */
   ::-webkit-scrollbar {
     width: 8px;
