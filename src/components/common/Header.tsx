@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { 
-  Atom, 
-  Volume2, 
-  VolumeX, 
-  Zap, 
-  ZapOff, 
-  BookOpen, 
-  CheckCircle2, 
+import {
+  Atom,
+  Volume2,
+  VolumeX,
+  Zap,
+  ZapOff,
+  BookOpen,
+  CheckCircle2,
   Flame,
   Menu,
   X,
-  Languages
+  Languages,
+  Award
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
 import type { ChapterId, Language } from '../../types';
 import { CheatSheetModal } from './CheatSheetModal';
+import { ScrollProgressBar } from './ScrollProgressBar';
+import { getChapterColorClasses } from '../../utils/chapterColors';
 
 export const Header: React.FC = () => {
   const {
@@ -97,6 +100,26 @@ export const Header: React.FC = () => {
               <span className="text-xs font-mono font-bold text-cyan-400">
                 {completedChapters.length} / {t.chapters.length} ({progressPercentage}%)
               </span>
+              <div className="flex items-center gap-1 pl-2 ml-1 border-l border-slate-800">
+                {t.chapters.map((chap) => {
+                  const unlocked = isChapterCompleted(chap.id);
+                  const colors = getChapterColorClasses(chap.color);
+                  return (
+                    <button
+                      key={chap.id}
+                      onClick={() => handleSelectChapter(chap.id)}
+                      title={`${chap.shortTitle}${unlocked ? ' ✓' : ''}`}
+                      className={`transition-all ${
+                        unlocked
+                          ? `${colors.badgeText} scale-100`
+                          : 'text-slate-700 hover:text-slate-500 scale-90'
+                      }`}
+                    >
+                      <Award className="w-3.5 h-3.5" fill={unlocked ? 'currentColor' : 'none'} fillOpacity={unlocked ? 0.25 : 0} />
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Right Quick Controls */}
@@ -208,6 +231,7 @@ export const Header: React.FC = () => {
               {t.chapters.map((chap) => {
                 const isActive = currentChapter === chap.id;
                 const isCompleted = isChapterCompleted(chap.id);
+                const colors = getChapterColorClasses(chap.color);
 
                 return (
                   <button
@@ -215,15 +239,15 @@ export const Header: React.FC = () => {
                     onClick={() => handleSelectChapter(chap.id)}
                     className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
                       isActive
-                        ? 'bg-cyan-500/15 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                        ? `${colors.navActiveBg} ${colors.navActiveText} border ${colors.navActiveBorder} shadow-sm`
                         : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/80'
                     }`}
                   >
                     {isCompleted ? (
                       <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
                     ) : (
-                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-mono ${
-                        isActive ? 'bg-cyan-400 text-slate-950 font-bold' : 'bg-slate-800 text-slate-400'
+                      <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-mono transition-all ${
+                        isActive ? `${colors.pillBg} ${colors.pillText} font-bold` : 'bg-slate-800 text-slate-400'
                       }`}>
                         {chap.number}
                       </span>
@@ -236,6 +260,9 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
+        {/* Scroll progress within the current chapter, tinted to its accent color */}
+        <ScrollProgressBar />
+
         {/* Mobile Dropdown Nav */}
         {isMobileMenuOpen && (
           <div className="md:hidden border-t border-slate-800 bg-slate-950 p-4 space-y-2 animate-fadeIn">
@@ -245,6 +272,7 @@ export const Header: React.FC = () => {
             {t.chapters.map((chap) => {
               const isActive = currentChapter === chap.id;
               const isCompleted = isChapterCompleted(chap.id);
+              const colors = getChapterColorClasses(chap.color);
 
               return (
                 <button
@@ -252,7 +280,7 @@ export const Header: React.FC = () => {
                   onClick={() => handleSelectChapter(chap.id)}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm font-medium transition-all ${
                     isActive
-                      ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
+                      ? `${colors.navActiveBg} ${colors.navActiveText} border ${colors.navActiveBorder}`
                       : 'text-slate-300 bg-slate-900/60 hover:bg-slate-900'
                   }`}
                 >

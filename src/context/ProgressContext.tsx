@@ -32,7 +32,7 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   });
 
   const [renderFlashEnabled, setRenderFlashEnabled] = useState<boolean>(true);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
+  const [soundEnabled, setSoundEnabled] = useState<boolean>(false);
 
   useEffect(() => {
     try {
