@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle, RotateCcw, Sparkles } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
 import type { ChapterId } from '../../types';
+import { ConfirmDialog } from './ConfirmDialog';
 
 export const Footer: React.FC = () => {
   const {
@@ -16,6 +17,7 @@ export const Footer: React.FC = () => {
   } = useProgress();
 
   const { t, isRTL } = useLanguage();
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
 
   const currentIndex = t.chapters.findIndex(c => c.id === currentChapter);
   const prevChapter = currentIndex > 0 ? t.chapters[currentIndex - 1] : null;
@@ -104,13 +106,9 @@ export const Footer: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <button
-              onClick={() => {
-                if (window.confirm(t.footer.resetConfirm)) {
-                  resetProgress();
-                  playTone('step');
-                }
-              }}
+              onClick={() => setIsResetDialogOpen(true)}
               className="flex items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors"
+              aria-label={t.footer.reset}
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>{t.footer.reset}</span>
@@ -119,6 +117,19 @@ export const Footer: React.FC = () => {
         </div>
 
       </div>
+
+      <ConfirmDialog
+        isOpen={isResetDialogOpen}
+        message={t.footer.resetConfirm}
+        confirmLabel={t.footer.resetConfirmAction}
+        cancelLabel={t.footer.resetCancel}
+        onConfirm={() => {
+          resetProgress();
+          playTone('step');
+          setIsResetDialogOpen(false);
+        }}
+        onCancel={() => setIsResetDialogOpen(false)}
+      />
     </footer>
   );
 };

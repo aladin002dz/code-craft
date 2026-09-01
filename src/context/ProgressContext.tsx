@@ -18,10 +18,40 @@ interface ProgressContextType {
 
 const TOTAL_CHAPTERS = 7;
 
+const VALID_CHAPTER_IDS: ChapterId[] = [
+  'why-state',
+  'anatomy',
+  'snapshot-queue',
+  'fiber-hooks',
+  'complex-state',
+  'interactive-labs',
+  'quiz',
+];
+
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentChapter, setCurrentChapter] = useState<ChapterId>('why-state');
+  const [currentChapter, setCurrentChapterState] = useState<ChapterId>(() => {
+    try {
+      const saved = localStorage.getItem('usestate_current_chapter');
+      return saved && VALID_CHAPTER_IDS.includes(saved as ChapterId) ? (saved as ChapterId) : 'why-state';
+    } catch {
+      return 'why-state';
+    }
+  });
+
+  // Wraps the raw setter so every navigation (tabs, footer, badges...) is
+  // persisted automatically instead of needing a separate effect keyed off
+  // `currentChapter` — that would also fire on the initial mount for no
+  // reason.
+  const setCurrentChapter = useCallback((id: ChapterId) => {
+    setCurrentChapterState(id);
+    try {
+      localStorage.setItem('usestate_current_chapter', id);
+    } catch (e) {
+      console.warn('Could not persist current chapter to localStorage', e);
+    }
+  }, []);
   const [completedChapters, setCompletedChapters] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem('usestate_completed_chapters');

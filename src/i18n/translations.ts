@@ -18,6 +18,8 @@ export const TRANSLATIONS: Record<Language, {
     completed: string;
     reset: string;
     resetConfirm: string;
+    resetConfirmAction: string;
+    resetCancel: string;
     builtWith: string;
   };
   cheatSheetModal: {
@@ -311,6 +313,8 @@ export const TRANSLATIONS: Record<Language, {
       completed: 'Module Completed!',
       reset: 'Reset Progress',
       resetConfirm: 'Reset all your progress?',
+      resetConfirmAction: 'Yes, reset everything',
+      resetCancel: 'Cancel',
       builtWith: 'Built with React 19, TypeScript, Tailwind CSS & Framer Motion.',
     },
     cheatSheetModal: {
@@ -768,6 +772,8 @@ export const TRANSLATIONS: Record<Language, {
       completed: 'Module Terminé !',
       reset: 'Réinitialiser la progression',
       resetConfirm: 'Voulez-vous réinitialiser toute votre progression ?',
+      resetConfirmAction: 'Oui, tout réinitialiser',
+      resetCancel: 'Annuler',
       builtWith: 'Conçu avec React 19, TypeScript, Tailwind CSS & Framer Motion.',
     },
     cheatSheetModal: {
@@ -1225,6 +1231,8 @@ export const TRANSLATIONS: Record<Language, {
       completed: 'اكتملت الوحدة بنجاح!',
       reset: 'إعادة ضبط التقدم',
       resetConfirm: 'هل تريد إعادة ضبط مستوى تقدمك بالكامل؟',
+      resetConfirmAction: 'نعم، إعادة ضبط كل شيء',
+      resetCancel: 'إلغاء',
       builtWith: 'تم البناء باستخدام React 19 و TypeScript و Tailwind CSS و Framer Motion.',
     },
     cheatSheetModal: {

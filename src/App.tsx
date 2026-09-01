@@ -3,6 +3,7 @@ import { ProgressProvider, useProgress } from './context/ProgressContext';
 import { LanguageProvider } from './context/LanguageContext';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
+import { FloatingNextButton } from './components/common/FloatingNextButton';
 import { Chapter1WhyState } from './components/chapters/Chapter1WhyState';
 import { Chapter2Anatomy } from './components/chapters/Chapter2Anatomy';
 import { Chapter3SnapshotQueue } from './components/chapters/Chapter3SnapshotQueue';
@@ -37,6 +38,7 @@ function App() {
             <MainContent />
           </div>
           <Footer />
+          <FloatingNextButton />
         </div>
       </ProgressProvider>
     </LanguageProvider>
