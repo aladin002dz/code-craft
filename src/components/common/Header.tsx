@@ -70,7 +70,7 @@ export const Header: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-black tracking-tight text-white">
-                    React<span className="text-cyan-400">useState</span>
+                    React<span className="text-slate-500">.</span><span className="text-cyan-400">useState</span>
                   </span>
                   <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono font-bold uppercase rounded-md bg-cyan-950 text-cyan-400 border border-cyan-800">
                     {t.header.badge}

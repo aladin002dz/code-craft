@@ -36,7 +36,11 @@ export const RenderFlashingBox: React.FC<RenderFlashingBoxProps> = ({
       }, 600);
       return () => clearTimeout(timer);
     }
-  });
+    // Only react to an actual re-render of the wrapped content (new `children`)
+    // or the toggle changing — NOT to `isFlashing` changing itself, otherwise
+    // setIsFlashing here would re-trigger this very effect forever.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [children, renderFlashEnabled]);
 
   const colorStyles = {
     cyan: isFlashing && renderFlashEnabled
