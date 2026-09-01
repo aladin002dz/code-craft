@@ -109,6 +109,7 @@ export const Header: React.FC = () => {
                       key={chap.id}
                       onClick={() => handleSelectChapter(chap.id)}
                       title={`${chap.shortTitle}${unlocked ? ' ✓' : ''}`}
+                      aria-label={`${chap.shortTitle}${unlocked ? ' — completed' : ' — not completed yet'}`}
                       className={`transition-all ${
                         unlocked
                           ? `${colors.badgeText} scale-100`
@@ -131,6 +132,9 @@ export const Header: React.FC = () => {
                   onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold transition-all"
                   title="Switch Language / Changer de langue / تغيير اللغة"
+                  aria-label="Switch Language / Changer de langue / تغيير اللغة"
+                  aria-haspopup="menu"
+                  aria-expanded={isLangDropdownOpen}
                 >
                   <Languages className="w-3.5 h-3.5 text-cyan-400" />
                   <span className="uppercase font-bold font-mono">{language}</span>
@@ -171,6 +175,8 @@ export const Header: React.FC = () => {
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
                 }`}
                 title="Render Flasher: Highlights components when they re-render"
+                aria-label={renderFlashEnabled ? t.header.renderFlashOn : t.header.renderFlashOff}
+                aria-pressed={renderFlashEnabled}
               >
                 {renderFlashEnabled ? (
                   <>
@@ -197,6 +203,8 @@ export const Header: React.FC = () => {
                     : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-400'
                 }`}
                 title={soundEnabled ? 'Mute' : 'Unmute'}
+                aria-label={soundEnabled ? 'Mute' : 'Unmute'}
+                aria-pressed={soundEnabled}
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
               </button>
@@ -217,6 +225,8 @@ export const Header: React.FC = () => {
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="p-2 rounded-xl border border-slate-800 bg-slate-900 text-slate-300 md:hidden"
+                aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={isMobileMenuOpen}
               >
                 {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>

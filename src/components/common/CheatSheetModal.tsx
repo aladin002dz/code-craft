@@ -13,6 +13,15 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
   const { t } = useLanguage();
   const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
 
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleCopyCode = async (code: string, idx: number) => {
@@ -27,8 +36,18 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fadeIn"
+      onClick={onClose}
+      role="presentation"
+    >
+      <div
+        className="relative w-full max-w-4xl max-h-[90vh] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t.cheatSheetModal.title}
+      >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950/80">
           <div className="flex items-center gap-3">
@@ -49,6 +68,7 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
               onClose();
             }}
             className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors"
+            aria-label={t.cheatSheetModal.closeTip}
           >
             <X className="w-5 h-5" />
           </button>
