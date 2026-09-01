@@ -3,12 +3,9 @@ import { Card } from '../common/Card';
 import { Badge } from '../common/Badge';
 import { CodeBlock } from '../common/CodeBlock';
 import { RenderFlashingBox } from '../common/RenderFlashingBox';
-import { 
-  Microscope, 
-  Zap, 
-  CheckCircle2, 
-  AlertCircle, 
-  Layers
+import {
+  Layers,
+  Clock
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -89,20 +86,17 @@ export const Chapter2Anatomy: React.FC = () => {
     <div className="space-y-10 animate-fadeIn">
       
       {/* Chapter Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-blue-950/40 via-slate-900/80 to-slate-950 border border-blue-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
-          <Microscope className="w-64 h-64 text-blue-400" />
-        </div>
-        <div className="relative z-10 space-y-4 max-w-3xl">
-          <div className="flex flex-wrap items-center gap-2">
+      <div className="border-t-2 border-purple-400 bg-slate-900/40 border-x border-b border-slate-800 rounded-b-lg p-6 md:p-10">
+        <div className="space-y-4 max-w-3xl">
+          <div className="flex flex-wrap items-center gap-4">
             <Badge variant="purple" size="md">{t.chapter2.badge1}</Badge>
             <Badge variant="cyan" size="md">{t.chapter2.badge2}</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter2.readTime}</span>
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 font-mono"><Clock className="w-3 h-3" /> {t.chapter2.readTime}</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          <h1 className="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight font-display">
             {t.chapter2.title} <code className="text-cyan-400 font-mono">{t.chapter2.titleAccent}</code>
           </h1>
-          <p className="text-base md:text-lg text-slate-300 leading-relaxed">
+          <p className="text-base md:text-lg text-slate-400 leading-relaxed">
             {t.chapter2.subtitle}
           </p>
         </div>
@@ -110,16 +104,13 @@ export const Chapter2Anatomy: React.FC = () => {
 
       {/* Interactive Syntax Microscope */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2">
-          <Microscope className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-xl font-bold text-white">{t.chapter2.microscopeTitle}</h2>
-        </div>
+        <h2 className="text-xl font-semibold text-white">{t.chapter2.microscopeTitle}</h2>
         <p className="text-sm text-slate-400">
           {t.chapter2.microscopeSubtitle}
         </p>
 
         {/* Clickable Code Tokens */}
-        <div className="p-6 md:p-8 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-center gap-2 md:gap-3 text-lg md:text-2xl font-mono shadow-2xl" dir="ltr">
+        <div className="p-6 md:p-8 rounded-lg bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-center gap-2 md:gap-3 text-lg md:text-2xl font-mono " dir="ltr">
           <span className="text-purple-400 font-semibold select-none">const</span>
           
           <button
@@ -129,7 +120,7 @@ export const Chapter2Anatomy: React.FC = () => {
             }}
             className={`px-2 py-1 rounded-lg border transition-all ${
               activeToken === 'destructuring'
-                ? 'bg-purple-500/20 border-purple-400 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
+                ? 'bg-purple-500/20 border-purple-400 text-purple-300'
                 : 'border-slate-800 text-slate-500 hover:text-slate-300'
             }`}
             title="Array Destructuring"
@@ -142,9 +133,9 @@ export const Chapter2Anatomy: React.FC = () => {
               playTone('step');
               setActiveToken('state');
             }}
-            className={`px-3 py-1 rounded-lg border font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg border font-semibold transition-all ${
               activeToken === 'state'
-                ? 'bg-cyan-500/25 border-cyan-400 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.4)] scale-105'
+                ? 'bg-cyan-500/25 border-cyan-400 text-cyan-300 scale-105'
                 : 'border-slate-800 text-cyan-400/70 hover:text-cyan-300 hover:border-slate-700'
             }`}
           >
@@ -158,9 +149,9 @@ export const Chapter2Anatomy: React.FC = () => {
               playTone('step');
               setActiveToken('setter');
             }}
-            className={`px-3 py-1 rounded-lg border font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg border font-semibold transition-all ${
               activeToken === 'setter'
-                ? 'bg-emerald-500/25 border-emerald-400 text-emerald-300 shadow-[0_0_15px_rgba(16,185,129,0.4)] scale-105'
+                ? 'bg-emerald-500/25 border-emerald-400 text-emerald-300 scale-105'
                 : 'border-slate-800 text-emerald-400/70 hover:text-emerald-300 hover:border-slate-700'
             }`}
           >
@@ -174,7 +165,7 @@ export const Chapter2Anatomy: React.FC = () => {
             }}
             className={`px-2 py-1 rounded-lg border transition-all ${
               activeToken === 'destructuring'
-                ? 'bg-purple-500/20 border-purple-400 text-purple-300 shadow-[0_0_15px_rgba(168,85,247,0.3)]'
+                ? 'bg-purple-500/20 border-purple-400 text-purple-300'
                 : 'border-slate-800 text-slate-500 hover:text-slate-300'
             }`}
           >
@@ -188,9 +179,9 @@ export const Chapter2Anatomy: React.FC = () => {
               playTone('step');
               setActiveToken('hook');
             }}
-            className={`px-3 py-1 rounded-lg border font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg border font-semibold transition-all ${
               activeToken === 'hook'
-                ? 'bg-amber-500/25 border-amber-400 text-amber-300 shadow-[0_0_15px_rgba(245,158,11,0.4)] scale-105'
+                ? 'bg-amber-500/25 border-amber-400 text-amber-300 scale-105'
                 : 'border-slate-800 text-amber-400/70 hover:text-amber-300 hover:border-slate-700'
             }`}
           >
@@ -204,9 +195,9 @@ export const Chapter2Anatomy: React.FC = () => {
               playTone('step');
               setActiveToken('initial');
             }}
-            className={`px-3 py-1 rounded-lg border font-bold transition-all ${
+            className={`px-3 py-1 rounded-lg border font-semibold transition-all ${
               activeToken === 'initial'
-                ? 'bg-rose-500/25 border-rose-400 text-rose-300 shadow-[0_0_15px_rgba(244,63,94,0.4)] scale-105'
+                ? 'bg-rose-500/25 border-rose-400 text-rose-300 scale-105'
                 : 'border-slate-800 text-rose-400/70 hover:text-rose-300 hover:border-slate-700'
             }`}
           >
@@ -217,9 +208,9 @@ export const Chapter2Anatomy: React.FC = () => {
         </div>
 
         {/* Selected Token Detail Card */}
-        <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+        <div className="p-6 rounded-lg bg-slate-900/40 border border-slate-800 space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-white flex items-center gap-2">
+            <h3 className="text-lg font-semibold text-white flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
               {tokenDetails[activeToken].title}
             </h3>
@@ -243,8 +234,8 @@ export const Chapter2Anatomy: React.FC = () => {
         badge={<Badge variant="purple">{t.chapter2.whyArrayBadge}</Badge>}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300 pt-2">
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
-            <div className="font-bold text-rose-400 text-xs uppercase tracking-wider">
+          <div className="p-4 rounded-lg bg-slate-950/70 border border-slate-800 space-y-2">
+            <div className="font-semibold text-rose-400 text-xs uppercase tracking-wider">
               {t.chapter2.ifObject}
             </div>
             <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto" dir="ltr">
@@ -255,8 +246,8 @@ export const Chapter2Anatomy: React.FC = () => {
             </p>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-950/70 border border-emerald-900/40 space-y-2">
-            <div className="font-bold text-emerald-400 text-xs uppercase tracking-wider">
+          <div className="p-4 rounded-lg bg-slate-950/70 border border-slate-800 space-y-2">
+            <div className="font-semibold text-emerald-400 text-xs uppercase tracking-wider">
               {t.chapter2.withArray}
             </div>
             <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto" dir="ltr">
@@ -272,27 +263,21 @@ export const Chapter2Anatomy: React.FC = () => {
       {/* Lazy Initial State Deep Dive */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Zap className="w-5 h-5 text-amber-400" />
-            <h2 className="text-xl font-bold text-white">{t.chapter2.lazyTitle}</h2>
-          </div>
+          <h2 className="text-xl font-semibold text-white">{t.chapter2.lazyTitle}</h2>
           <Badge variant="amber">{t.chapter2.lazyBadge}</Badge>
         </div>
 
-        <p className="text-sm text-slate-300 leading-relaxed">
+        <p className="text-sm text-slate-400 leading-relaxed">
           {t.chapter2.lazyDesc}
         </p>
 
         {/* Live Benchmark Simulator Comparison */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          
+
           {/* Eager Computation */}
-          <div className="p-6 rounded-2xl bg-rose-950/10 border border-rose-900/40 space-y-4">
+          <div className="p-6 rounded-lg border-t-2 border-t-rose-400 bg-slate-900/40 border-x border-b border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-rose-400" />
-                <h3 className="font-bold text-rose-300 text-base">{t.chapter2.eagerTitle}</h3>
-              </div>
+              <h3 className="font-semibold text-slate-100 text-base font-display">{t.chapter2.eagerTitle}</h3>
               <Badge variant="rose">{t.chapter2.eagerBadge}</Badge>
             </div>
 
@@ -306,11 +291,11 @@ export const Chapter2Anatomy: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3 text-center">
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
                     <div className="text-[11px] text-slate-400">{t.chapter2.eagerRenders}</div>
-                    <div className="text-2xl font-black text-rose-400 font-mono">{eagerRenders}</div>
+                    <div className="text-2xl font-semibold text-rose-400 font-mono">{eagerRenders}</div>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
                     <div className="text-[11px] text-slate-400">{t.chapter2.eagerRuns}</div>
-                    <div className="text-2xl font-black text-rose-400 font-mono">{eagerCalculations}</div>
+                    <div className="text-2xl font-semibold text-rose-400 font-mono">{eagerCalculations}</div>
                   </div>
                 </div>
 
@@ -320,7 +305,7 @@ export const Chapter2Anatomy: React.FC = () => {
 
                 <button
                   onClick={handleEagerClick}
-                  className="w-full px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all shadow-lg shadow-rose-950/40"
+                  className="w-full px-4 py-2.5 rounded-lg bg-rose-500 hover:bg-rose-400 text-slate-950 font-semibold text-xs transition-all"
                 >
                   {t.chapter2.eagerBtn}
                 </button>
@@ -329,12 +314,9 @@ export const Chapter2Anatomy: React.FC = () => {
           </div>
 
           {/* Lazy Initializer */}
-          <div className="p-6 rounded-2xl bg-emerald-950/10 border border-emerald-900/40 space-y-4">
+          <div className="p-6 rounded-lg border-t-2 border-t-emerald-400 bg-slate-900/40 border-x border-b border-slate-800 space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <h3 className="font-bold text-emerald-300 text-base">{t.chapter2.lazyCardTitle}</h3>
-              </div>
+              <h3 className="font-semibold text-slate-100 text-base font-display">{t.chapter2.lazyCardTitle}</h3>
               <Badge variant="emerald">{t.chapter2.lazyCardBadge}</Badge>
             </div>
 
@@ -348,11 +330,11 @@ export const Chapter2Anatomy: React.FC = () => {
                 <div className="grid grid-cols-2 gap-3 text-center">
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
                     <div className="text-[11px] text-slate-400">{t.chapter2.lazyRendersLabel}</div>
-                    <div className="text-2xl font-black text-emerald-400 font-mono">{lazyRenders}</div>
+                    <div className="text-2xl font-semibold text-emerald-400 font-mono">{lazyRenders}</div>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
                     <div className="text-[11px] text-slate-400">{t.chapter2.lazyRunsLabel}</div>
-                    <div className="text-2xl font-black text-emerald-400 font-mono">{lazyCalculations}</div>
+                    <div className="text-2xl font-semibold text-emerald-400 font-mono">{lazyCalculations}</div>
                   </div>
                 </div>
 
@@ -362,7 +344,7 @@ export const Chapter2Anatomy: React.FC = () => {
 
                 <button
                   onClick={handleLazyClick}
-                  className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs transition-all shadow-lg shadow-emerald-950/40"
+                  className="w-full px-4 py-2.5 rounded-md bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-semibold text-xs transition-colors"
                 >
                   {t.chapter2.lazyBtn}
                 </button>

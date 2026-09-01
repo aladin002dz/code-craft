@@ -7,6 +7,11 @@ interface BadgeProps {
   className?: string;
 }
 
+/**
+ * A small text label — deliberately not a filled pill. A colored dot marks
+ * the category and the text itself carries the color, in line with the
+ * editorial/technical-docs direction (labels, not badges).
+ */
 export const Badge: React.FC<BadgeProps> = ({
   children,
   variant = 'cyan',
@@ -14,73 +19,34 @@ export const Badge: React.FC<BadgeProps> = ({
   className = '',
 }) => {
   const variantStyles = {
-    cyan: 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30',
-    emerald: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30',
-    purple: 'bg-purple-500/10 text-purple-300 border-purple-500/30',
-    amber: 'bg-amber-500/10 text-amber-300 border-amber-500/30',
-    rose: 'bg-rose-500/10 text-rose-300 border-rose-500/30',
-    slate: 'bg-slate-800 text-slate-300 border-slate-700',
+    cyan: 'text-cyan-400',
+    emerald: 'text-emerald-400',
+    purple: 'text-purple-400',
+    amber: 'text-amber-400',
+    rose: 'text-rose-400',
+    slate: 'text-slate-400',
+  };
+
+  const dotStyles = {
+    cyan: 'bg-cyan-400',
+    emerald: 'bg-emerald-400',
+    purple: 'bg-purple-400',
+    amber: 'bg-amber-400',
+    rose: 'bg-rose-400',
+    slate: 'bg-slate-500',
   };
 
   const sizeStyles = {
-    sm: 'text-xs px-2.5 py-0.5',
-    md: 'text-sm px-3 py-1',
+    sm: 'text-[11px]',
+    md: 'text-xs',
   };
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 font-medium rounded-full border ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center gap-1.5 font-semibold uppercase tracking-wider ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     >
+      <span className={`w-1.5 h-1.5 rounded-full ${dotStyles[variant]}`} />
       {children}
     </span>
-  );
-};
-
-interface CardProps {
-  children: React.ReactNode;
-  title?: string;
-  subtitle?: string;
-  icon?: React.ReactNode;
-  badge?: React.ReactNode;
-  className?: string;
-  glowColor?: 'cyan' | 'emerald' | 'purple' | 'amber' | 'rose' | 'none';
-}
-
-export const Card: React.FC<CardProps> = ({
-  children,
-  title,
-  subtitle,
-  icon,
-  badge,
-  className = '',
-  glowColor = 'none',
-}) => {
-  const glowStyles = {
-    none: '',
-    cyan: 'hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]',
-    emerald: 'hover:border-emerald-500/50 hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]',
-    purple: 'hover:border-purple-500/50 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]',
-    amber: 'hover:border-amber-500/50 hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]',
-    rose: 'hover:border-rose-500/50 hover:shadow-[0_0_30px_rgba(244,63,94,0.15)]',
-  };
-
-  return (
-    <div
-      className={`rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-md p-6 transition-all duration-300 ${glowStyles[glowColor]} ${className}`}
-    >
-      {(title || icon || badge) && (
-        <div className="flex items-start justify-between gap-4 mb-4 pb-3 border-b border-slate-800/60">
-          <div className="flex items-center gap-3">
-            {icon && <div className="p-2 rounded-xl bg-slate-800/80 text-cyan-400">{icon}</div>}
-            <div>
-              {title && <h3 className="text-lg font-bold text-slate-100">{title}</h3>}
-              {subtitle && <p className="text-sm text-slate-400 mt-0.5">{subtitle}</p>}
-            </div>
-          </div>
-          {badge && <div>{badge}</div>}
-        </div>
-      )}
-      {children}
-    </div>
   );
 };

@@ -68,14 +68,14 @@ export const ShoppingApp: React.FC = () => {
       
       {/* Interactive Cart Widget */}
       <div className="lg:col-span-7 space-y-4">
-        <RenderFlashingBox label="ShoppingCartComponent" flashColor="cyan" className="bg-slate-950">
+        <RenderFlashingBox label="ShoppingCartComponent" flashColor="cyan">
           <div className="space-y-4">
             
             {/* Header */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5 text-cyan-400" />
-                <h3 className="font-bold text-white text-base">Your Cart Items</h3>
+                <h3 className="font-semibold text-white text-base">Your Cart Items</h3>
               </div>
               <Badge variant="cyan">{totalItemCount} items</Badge>
             </div>
@@ -90,7 +90,7 @@ export const ShoppingApp: React.FC = () => {
                 cart.map(item => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-900 border border-slate-800"
+                    className="flex items-center justify-between p-3 rounded-lg bg-slate-900/60 border border-slate-800"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl p-2 rounded-lg bg-slate-950">{item.icon}</span>
@@ -109,7 +109,7 @@ export const ShoppingApp: React.FC = () => {
                         >
                           <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="px-3 py-1 text-xs font-mono font-bold text-cyan-300">
+                        <span className="px-3 py-1 text-xs font-mono font-semibold text-cyan-300">
                           {item.quantity}
                         </span>
                         <button
@@ -120,7 +120,7 @@ export const ShoppingApp: React.FC = () => {
                         </button>
                       </div>
 
-                      <div className="w-16 text-right font-mono font-bold text-sm text-slate-200">
+                      <div className="w-16 text-right font-mono font-semibold text-sm text-slate-200">
                         ${item.price * item.quantity}
                       </div>
 
@@ -147,7 +147,7 @@ export const ShoppingApp: React.FC = () => {
               />
               <button
                 type="submit"
-                className="px-4 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors flex items-center gap-1"
+                className="px-4 py-1.5 rounded-lg bg-purple-500 hover:bg-purple-400 text-slate-950 font-semibold text-xs transition-colors flex items-center gap-1"
               >
                 <Tag className="w-3 h-3" />
                 <span>Apply</span>
@@ -155,7 +155,7 @@ export const ShoppingApp: React.FC = () => {
             </form>
 
             {/* Price Calculations */}
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+            <div className="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2 text-xs font-mono">
               <div className="flex justify-between text-slate-400">
                 <span>Subtotal:</span>
                 <span>${subtotal.toFixed(2)}</span>
@@ -170,7 +170,7 @@ export const ShoppingApp: React.FC = () => {
                 <span>Estimated Tax (8%):</span>
                 <span>${tax.toFixed(2)}</span>
               </div>
-              <div className="flex justify-between text-base font-bold text-cyan-300 pt-2 border-t border-slate-800">
+              <div className="flex justify-between text-base font-semibold text-cyan-300 pt-2 border-t border-slate-800">
                 <span>Grand Total:</span>
                 <span>${grandTotal.toFixed(2)}</span>
               </div>
@@ -182,8 +182,8 @@ export const ShoppingApp: React.FC = () => {
 
       {/* Derived State Principle Explanation */}
       <div className="lg:col-span-5 space-y-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm">
+        <div className="p-5 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-cyan-400 font-semibold text-sm">
             <Sparkles className="w-4 h-4" />
             <span>Key Lesson: Avoid Redundant State</span>
           </div>

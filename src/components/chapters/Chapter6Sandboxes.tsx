@@ -4,12 +4,12 @@ import { ShoppingApp } from '../sandboxes/ShoppingApp';
 import { FormWizardApp } from '../sandboxes/FormWizardApp';
 import { UndoRedoApp } from '../sandboxes/UndoRedoApp';
 import { CustomHooksApp } from '../sandboxes/CustomHooksApp';
-import { 
-  Terminal, 
-  ShoppingCart, 
-  FileText, 
-  History, 
-  Sparkles
+import {
+  ShoppingCart,
+  FileText,
+  History,
+  Sparkles,
+  Clock
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
@@ -61,20 +61,17 @@ export const Chapter6Sandboxes: React.FC = () => {
     <div className="space-y-10 animate-fadeIn">
       
       {/* Chapter Hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-emerald-950/40 via-slate-900/80 to-slate-950 border border-emerald-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
-          <Terminal className="w-64 h-64 text-emerald-400" />
-        </div>
-        <div className="relative z-10 space-y-4 max-w-3xl">
-          <div className="flex flex-wrap items-center gap-2">
+      <div className="border-t-2 border-emerald-400 bg-slate-900/40 border-x border-b border-slate-800 rounded-b-lg p-6 md:p-10">
+        <div className="space-y-4 max-w-3xl">
+          <div className="flex flex-wrap items-center gap-4">
             <Badge variant="emerald" size="md">{t.chapter6.badge1}</Badge>
             <Badge variant="cyan" size="md">{t.chapter6.badge2}</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter6.readTime}</span>
+            <span className="flex items-center gap-1.5 text-xs text-slate-500 font-mono"><Clock className="w-3 h-3" /> {t.chapter6.readTime}</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            {t.chapter6.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">{t.chapter6.titleAccent}</span>
+          <h1 className="text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight font-display">
+            {t.chapter6.title} <span className="text-emerald-400">{t.chapter6.titleAccent}</span>
           </h1>
-          <p className="text-base md:text-lg text-slate-300 leading-relaxed">
+          <p className="text-base md:text-lg text-slate-400 leading-relaxed">
             {t.chapter6.subtitle}
           </p>
         </div>
@@ -86,32 +83,30 @@ export const Chapter6Sandboxes: React.FC = () => {
           <button
             key={tab.id}
             onClick={() => handleTabChange(tab.id)}
-            className={`p-4 rounded-2xl border text-left rtl:text-right transition-all flex flex-col justify-between space-y-2 ${
+            className={`p-4 rounded-lg border text-left rtl:text-right transition-colors flex flex-col justify-between space-y-2 ${
               activeTab === tab.id
-                ? 'bg-emerald-950/40 border-emerald-500/60 shadow-[0_0_20px_rgba(16,185,129,0.2)]'
-                : 'bg-slate-900/60 border-slate-800 hover:bg-slate-900 hover:border-slate-700'
+                ? 'border-t-2 border-t-emerald-400 border-x-slate-800 border-b-slate-800 bg-slate-900/40'
+                : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'
             }`}
           >
             <div className="flex items-center justify-between">
-              <div className={`p-2 rounded-xl ${
-                activeTab === tab.id ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-400'
-              }`}>
+              <span className={activeTab === tab.id ? 'text-emerald-400' : 'text-slate-500'}>
                 {tab.icon}
-              </div>
+              </span>
               <Badge variant={activeTab === tab.id ? 'emerald' : 'slate'}>
                 {tab.badge}
               </Badge>
             </div>
             <div>
-              <div className="text-sm font-bold text-white">{tab.label}</div>
-              <div className="text-xs text-slate-400 line-clamp-1">{tab.desc}</div>
+              <div className="text-sm font-semibold text-white">{tab.label}</div>
+              <div className="text-xs text-slate-500 line-clamp-1">{tab.desc}</div>
             </div>
           </button>
         ))}
       </div>
 
       {/* Render Active Sandbox */}
-      <div className="p-6 md:p-8 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-2xl">
+      <div className="p-6 md:p-8 rounded-lg bg-slate-900/40 border border-slate-800">
         {activeTab === 'shopping' && <ShoppingApp />}
         {activeTab === 'form' && <FormWizardApp />}
         {activeTab === 'undoredo' && <UndoRedoApp />}

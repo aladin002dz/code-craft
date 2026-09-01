@@ -42,19 +42,19 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="mt-20 border-t border-slate-800 bg-slate-950/90 backdrop-blur-md py-8">
+    <footer className="mt-20 border-t border-slate-800 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-        
+
         {/* Navigation Actions Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl">
-          
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-lg border border-slate-800">
+
           {/* Previous Button */}
           {prevChapter ? (
             <button
               onClick={() => handleNavigate(prevChapter.id)}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition-all border border-slate-700/60"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-md text-slate-400 hover:text-slate-100 text-sm font-medium transition-colors"
             >
-              {isRTL ? <ChevronRight className="w-4 h-4 text-cyan-400" /> : <ChevronLeft className="w-4 h-4 text-cyan-400" />}
+              {isRTL ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
               <span>{t.footer.prev}: {prevChapter.shortTitle}</span>
             </button>
           ) : (
@@ -65,15 +65,15 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-3 w-full sm:w-auto justify-center">
             <button
               onClick={handleCompleteCurrent}
-              className={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg transition-all ${
+              className={`w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-2 rounded-md font-semibold text-sm border transition-colors ${
                 isCurrentCompleted
-                  ? 'bg-emerald-950/80 border border-emerald-600/60 text-emerald-300'
-                  : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 shadow-cyan-500/20'
+                  ? 'border-emerald-800 text-emerald-400'
+                  : 'border-cyan-500 bg-cyan-500 text-slate-950 hover:bg-cyan-400 hover:border-cyan-400'
               }`}
             >
               {isCurrentCompleted ? (
                 <>
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle className="w-4 h-4" />
                   <span>{t.footer.completed}</span>
                 </>
               ) : (
@@ -89,10 +89,10 @@ export const Footer: React.FC = () => {
           {nextChapter ? (
             <button
               onClick={() => handleNavigate(nextChapter.id)}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition-all border border-slate-700/60"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 rounded-md text-slate-400 hover:text-slate-100 text-sm font-medium transition-colors"
             >
               <span>{t.footer.next}: {nextChapter.shortTitle}</span>
-              {isRTL ? <ChevronLeft className="w-4 h-4 text-cyan-400" /> : <ChevronRight className="w-4 h-4 text-cyan-400" />}
+              {isRTL ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
             </button>
           ) : (
             <div className="hidden sm:block" />

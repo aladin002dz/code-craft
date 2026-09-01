@@ -83,23 +83,23 @@ export const UndoRedoApp: React.FC = () => {
       
       {/* Visual Canvas Widget */}
       <div className="lg:col-span-7 space-y-4">
-        <RenderFlashingBox label="UndoRedoCanvas" flashColor="amber" className="bg-slate-950">
+        <RenderFlashingBox label="UndoRedoCanvas" flashColor="amber">
           <div className="space-y-6">
             
             {/* Header & Controls */}
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center gap-2">
                 <Palette className="w-5 h-5 text-amber-400" />
-                <h3 className="font-bold text-white text-base">Interactive State Time Machine</h3>
+                <h3 className="font-semibold text-white text-base">Interactive State Time Machine</h3>
               </div>
               
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleUndo}
                   disabled={!canUndo}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     canUndo
-                      ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 shadow-md'
+                      ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700'
                       : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-slate-800'
                   }`}
                   title="Undo (Ctrl+Z)"
@@ -111,9 +111,9 @@ export const UndoRedoApp: React.FC = () => {
                 <button
                   onClick={handleRedo}
                   disabled={!canRedo}
-                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                     canRedo
-                      ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 shadow-md'
+                      ? 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700'
                       : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-slate-800'
                   }`}
                   title="Redo (Ctrl+Y)"
@@ -134,13 +134,10 @@ export const UndoRedoApp: React.FC = () => {
 
             {/* Canvas Preview Area */}
             <div
-              className="h-36 rounded-2xl flex items-center justify-center border border-slate-800/80 transition-all duration-500 shadow-2xl"
-              style={{
-                backgroundColor: history.present,
-                boxShadow: `0 0 40px ${history.present}44`
-              }}
+              className="h-36 rounded-lg flex items-center justify-center border border-slate-800 transition-colors duration-500"
+              style={{ backgroundColor: history.present }}
             >
-              <div className="p-3 px-6 rounded-xl bg-slate-950/80 backdrop-blur-md text-white font-mono font-bold text-sm border border-white/20">
+              <div className="p-3 px-6 rounded-lg bg-slate-950/80 text-white font-mono font-semibold text-sm border border-white/20">
                 Active State: {history.present}
               </div>
             </div>
@@ -153,10 +150,10 @@ export const UndoRedoApp: React.FC = () => {
                   <button
                     key={c}
                     onClick={() => handleSelectColor(c)}
-                    className={`w-10 h-10 rounded-xl transition-all ${
+                    className={`w-10 h-10 rounded-lg transition-all ${
                       history.present === c
-                        ? 'ring-4 ring-white scale-110 shadow-lg'
-                        : 'hover:scale-105 opacity-80 hover:opacity-100'
+                        ? 'ring-2 ring-offset-2 ring-offset-slate-950 ring-white'
+                        : 'opacity-70 hover:opacity-100'
                     }`}
                     style={{ backgroundColor: c }}
                   />
@@ -165,14 +162,14 @@ export const UndoRedoApp: React.FC = () => {
             </div>
 
             {/* State Stack Visualizer */}
-            <div className="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
-              <div className="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">
+            <div className="p-4 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+              <div className="text-xs font-mono font-semibold text-slate-400 uppercase tracking-wider">
                 Memory State Stack:
               </div>
               <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono">
                 {/* Past Stack */}
                 <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="text-slate-500 font-bold">PAST ({history.past.length})</div>
+                  <div className="text-slate-500 font-semibold">PAST ({history.past.length})</div>
                   <div className="flex flex-wrap justify-center gap-1 min-h-[24px]">
                     {history.past.map((c, i) => (
                       <span key={i} className="w-4 h-4 rounded-full border border-slate-700" style={{ backgroundColor: c }} />
@@ -181,8 +178,8 @@ export const UndoRedoApp: React.FC = () => {
                 </div>
 
                 {/* Present Stack */}
-                <div className="p-2.5 rounded-lg bg-cyan-950/60 border border-cyan-500/60 space-y-1 shadow-lg shadow-cyan-500/10">
-                  <div className="text-cyan-300 font-bold">PRESENT</div>
+                <div className="p-2.5 rounded-lg bg-cyan-950/60 border border-cyan-500/60 space-y-1">
+                  <div className="text-cyan-300 font-semibold">PRESENT</div>
                   <div className="flex justify-center min-h-[24px]">
                     <span className="w-5 h-5 rounded-full border border-white" style={{ backgroundColor: history.present }} />
                   </div>
@@ -190,7 +187,7 @@ export const UndoRedoApp: React.FC = () => {
 
                 {/* Future Stack */}
                 <div className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 space-y-1">
-                  <div className="text-slate-500 font-bold">FUTURE ({history.future.length})</div>
+                  <div className="text-slate-500 font-semibold">FUTURE ({history.future.length})</div>
                   <div className="flex flex-wrap justify-center gap-1 min-h-[24px]">
                     {history.future.map((c, i) => (
                       <span key={i} className="w-4 h-4 rounded-full border border-slate-700" style={{ backgroundColor: c }} />
@@ -206,8 +203,8 @@ export const UndoRedoApp: React.FC = () => {
 
       {/* Code Blueprint */}
       <div className="lg:col-span-5 space-y-4">
-        <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
+        <div className="p-5 rounded-lg bg-slate-900/40 border border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-amber-400 font-semibold text-sm">
             <Sparkles className="w-4 h-4" />
             <span>State History Pattern (Past, Present, Future)</span>
           </div>

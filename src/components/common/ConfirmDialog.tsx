@@ -45,28 +45,26 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
       role="presentation"
     >
       <div
-        className="w-full max-w-sm bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 space-y-5"
+        className="w-full max-w-sm bg-slate-900 border border-slate-800 rounded-lg shadow-lg p-6 space-y-5"
         onClick={(e) => e.stopPropagation()}
         role="alertdialog"
         aria-modal="true"
       >
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-amber-500/15 text-amber-400 flex-shrink-0">
-            <AlertTriangle className="w-5 h-5" />
-          </div>
-          <p className="text-sm font-semibold text-slate-100 leading-snug">{message}</p>
+          <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
+          <p className="text-sm font-medium text-slate-100 leading-snug">{message}</p>
         </div>
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={onCancel}
-            className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-medium text-slate-400 hover:text-slate-100 transition-colors"
           >
             {cancelLabel}
           </button>
           <button
             ref={confirmButtonRef}
             onClick={onConfirm}
-            className="px-4 py-2 rounded-xl text-sm font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-rose-500 hover:from-amber-300 hover:to-rose-400 transition-colors"
+            className="px-4 py-2 rounded-md text-sm font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-colors"
           >
             {confirmLabel}
           </button>

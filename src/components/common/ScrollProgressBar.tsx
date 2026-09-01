@@ -37,9 +37,9 @@ export const ScrollProgressBar: React.FC = () => {
   }, [currentChapter]);
 
   return (
-    <div className="h-[3px] w-full bg-slate-900/60 overflow-hidden" aria-hidden="true">
+    <div className="h-[2px] w-full bg-slate-900 overflow-hidden" aria-hidden="true">
       <div
-        className={`h-full bg-gradient-to-r ${colors.progressFrom} ${colors.progressTo} transition-[width] duration-150 ease-out`}
+        className={`h-full ${colors.bg} transition-[width] duration-150 ease-out`}
         style={{ width: `${scrollPct}%` }}
       />
     </div>
