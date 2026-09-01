@@ -6,6 +6,7 @@ import {
   GitCommit, 
   AlertTriangle, 
   ArrowRight, 
+  ArrowLeft,
   ToggleLeft, 
   ToggleRight, 
   CheckCircle2, 
@@ -13,9 +14,11 @@ import {
   Network
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 export const Chapter4FiberLinkedList: React.FC = () => {
   const { playTone } = useProgress();
+  const { t, isRTL } = useLanguage();
 
   // Flag simulating conditional hook rendering
   const [isVipCondition, setIsVipCondition] = useState<boolean>(true);
@@ -27,7 +30,7 @@ export const Chapter4FiberLinkedList: React.FC = () => {
     if (!nextVal) {
       playTone('error');
       setBrokenOrderLogs(prev => [
-        `🚨 VIP Hook #1 skipped! Hook pointers mismatched: Hook #2 ('points') read 'VIP_GOLD' instead of 100!`,
+        `🚨 VIP Hook #1 skipped! Hook pointers mismatched!`,
         ...prev.slice(0, 3)
       ]);
     } else {
@@ -44,50 +47,46 @@ export const Chapter4FiberLinkedList: React.FC = () => {
       
       {/* Chapter Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-purple-950/40 via-slate-900/80 to-slate-950 border border-purple-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
           <Network className="w-64 h-64 text-purple-400" />
         </div>
         <div className="relative z-10 space-y-4 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="purple" size="md">Module 4</Badge>
-            <Badge variant="rose" size="md">React Internals</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ 7 min read + Fiber simulator</span>
+            <Badge variant="purple" size="md">{t.chapter4.badge1}</Badge>
+            <Badge variant="rose" size="md">{t.chapter4.badge2}</Badge>
+            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter4.readTime}</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Under the Hood: <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">React Fiber</span> & The Hooks Linked List
+            {t.chapter4.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">{t.chapter4.titleAccent}</span>
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            Ever wondered how React knows which state belongs to which <code className="text-purple-300">useState</code> call without passing unique string keys?
-            Let's dive into the internal <strong className="text-white">Fiber Node linked list</strong> and see why breaking the Rules of Hooks causes chaos!
+            {t.chapter4.subtitle}
           </p>
         </div>
       </div>
 
       {/* Fiber Linked List Architecture Card */}
       <Card
-        title="How React Stores State in Memory"
-        subtitle="The fiber.memoizedState Singly Linked List"
+        title={t.chapter4.fiberTitle}
+        subtitle={t.chapter4.fiberSubtitle}
         icon={<GitCommit className="w-5 h-5 text-purple-400" />}
-        badge={<Badge variant="purple">Fiber Architecture</Badge>}
+        badge={<Badge variant="purple">{t.chapter4.fiberBadge}</Badge>}
         glowColor="purple"
       >
         <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
-          <p>
-            When React renders a component, it creates a <strong className="text-white">Fiber Node</strong> (a plain JavaScript object tracking component metadata, DOM nodes, and state).
-            All hooks called in that component are stored in a linear <strong className="text-purple-300 font-mono">singly-linked list</strong> referenced by <code className="text-purple-300">fiber.memoizedState</code>.
-          </p>
+          <p>{t.chapter4.fiberDesc}</p>
 
           {/* Linked List Visual Diagram */}
           <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 overflow-x-auto">
             <div className="text-xs font-mono text-slate-400 mb-3 font-semibold">
-              fiber.memoizedState (Hooks Linked List Structure):
+              {t.chapter4.linkedListHeader}
             </div>
 
-            <div className="flex items-center gap-3 min-w-[600px]">
+            <div className="flex items-center gap-3 min-w-[600px]" dir="ltr">
               {/* Hook Node 1 */}
               <div className="p-4 rounded-xl bg-slate-900 border border-cyan-500/50 shadow-lg shadow-cyan-500/10 flex-1 space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="font-bold text-cyan-300">Hook #1 (useState)</span>
+                  <span className="font-bold text-cyan-300">{t.chapter4.hook1Label}</span>
                   <span className="text-slate-500">Index: 0</span>
                 </div>
                 <div className="p-2 rounded bg-slate-950 text-xs font-mono text-slate-300 space-y-1">
@@ -97,12 +96,12 @@ export const Chapter4FiberLinkedList: React.FC = () => {
                 </div>
               </div>
 
-              <ArrowRight className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" />
+              {isRTL ? <ArrowLeft className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" /> : <ArrowRight className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" />}
 
               {/* Hook Node 2 */}
               <div className="p-4 rounded-xl bg-slate-900 border border-emerald-500/50 shadow-lg shadow-emerald-500/10 flex-1 space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="font-bold text-emerald-300">Hook #2 (useState)</span>
+                  <span className="font-bold text-emerald-300">{t.chapter4.hook2Label}</span>
                   <span className="text-slate-500">Index: 1</span>
                 </div>
                 <div className="p-2 rounded bg-slate-950 text-xs font-mono text-slate-300 space-y-1">
@@ -112,12 +111,12 @@ export const Chapter4FiberLinkedList: React.FC = () => {
                 </div>
               </div>
 
-              <ArrowRight className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" />
+              {isRTL ? <ArrowLeft className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" /> : <ArrowRight className="w-6 h-6 text-purple-400 flex-shrink-0 animate-pulse" />}
 
               {/* Hook Node 3 */}
               <div className="p-4 rounded-xl bg-slate-900 border border-amber-500/50 shadow-lg shadow-amber-500/10 flex-1 space-y-2">
                 <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="font-bold text-amber-300">Hook #3 (useState)</span>
+                  <span className="font-bold text-amber-300">{t.chapter4.hook3Label}</span>
                   <span className="text-slate-500">Index: 2</span>
                 </div>
                 <div className="p-2 rounded bg-slate-950 text-xs font-mono text-slate-300 space-y-1">
@@ -130,7 +129,7 @@ export const Chapter4FiberLinkedList: React.FC = () => {
           </div>
 
           <p className="text-xs text-slate-400 italic">
-            Notice that React stores <strong>NO variable names</strong>. It only knows: "1st hook call gets Hook #1, 2nd hook call gets Hook #2".
+            {t.chapter4.noticeNoKeys}
           </p>
         </div>
       </Card>
@@ -140,14 +139,13 @@ export const Chapter4FiberLinkedList: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-rose-400" />
-            <h2 className="text-xl font-bold text-white">"Break the Rules of Hooks" Simulator</h2>
+            <h2 className="text-xl font-bold text-white">{t.chapter4.simTitle}</h2>
           </div>
-          <Badge variant="rose">Interactive Experiment</Badge>
+          <Badge variant="rose">{t.chapter4.simBadge}</Badge>
         </div>
 
         <p className="text-sm text-slate-300">
-          What happens when a hook is wrapped inside an <code className="text-rose-300 bg-rose-950/40 px-1.5 py-0.5 rounded">if (condition)</code> block?
-          Toggle the switch below to simulate what happens during the next render!
+          {t.chapter4.simDesc}
         </p>
 
         <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-6">
@@ -158,7 +156,7 @@ export const Chapter4FiberLinkedList: React.FC = () => {
             {/* Code */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-slate-400 uppercase">Illegal Component Code:</span>
+                <span className="text-xs font-mono font-bold text-slate-400 uppercase">{t.chapter4.illegalCode}</span>
                 <button
                   onClick={handleToggleCondition}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
@@ -175,23 +173,13 @@ export const Chapter4FiberLinkedList: React.FC = () => {
               <CodeBlock
                 filename="BadConditionalComponent.jsx"
                 highlightLines={!isVipCondition ? [3, 4, 5] : [7]}
-                code={`function BadComponent({ isVip }) {
-  // ❌ ILLEGAL: Hook called inside conditional!
-  if (isVip) {
-    const [badge, setBadge] = useState('VIP_GOLD'); // Hook #1
-  }
-
-  const [points, setPoints] = useState(100);       // Hook #2
-  const [isActive, setIsActive] = useState(true);   // Hook #3
-
-  return <div>Points: {points}</div>;
-}`}
+                code={`function BadComponent({ isVip }) {\n  // ❌ ILLEGAL: Hook inside conditional!\n  if (isVip) {\n    const [badge, setBadge] = useState('VIP_GOLD'); // Hook #1\n  }\n\n  const [points, setPoints] = useState(100);       // Hook #2\n  const [isActive, setIsActive] = useState(true);   // Hook #3\n\n  return <div>Points: {points}</div>;\n}`}
               />
             </div>
 
             {/* Fiber Node State Live Alignment */}
             <div className="space-y-3">
-              <span className="text-xs font-mono font-bold text-slate-400 uppercase">Fiber Node State Pointer Alignment:</span>
+              <span className="text-xs font-mono font-bold text-slate-400 uppercase">{t.chapter4.alignmentHeader}</span>
               
               <div className={`p-4 rounded-xl border transition-all ${
                 isVipCondition
@@ -202,7 +190,7 @@ export const Chapter4FiberLinkedList: React.FC = () => {
                   <div className="space-y-3 text-xs font-mono">
                     <div className="flex items-center gap-2 font-bold text-emerald-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                      <span>Render 1 (isVip = true): Pointers In Sync</span>
+                      <span>{t.chapter4.inSyncTitle}</span>
                     </div>
                     <div className="p-2 rounded bg-slate-900 border border-emerald-900/40 space-y-1">
                       <div>1st Call: `badge` receives stored state: <span className="text-cyan-400 font-bold">'VIP_GOLD'</span> (Hook #1)</div>
@@ -214,25 +202,22 @@ export const Chapter4FiberLinkedList: React.FC = () => {
                   <div className="space-y-3 text-xs font-mono">
                     <div className="flex items-center gap-2 font-bold text-rose-300">
                       <XCircle className="w-4 h-4 text-rose-400" />
-                      <span>Render 2 (isVip = false): STATE POINTER CORRUPTION!</span>
+                      <span>{t.chapter4.corruptTitle}</span>
                     </div>
                     <div className="p-2 rounded bg-slate-900 border border-rose-900/40 space-y-1 text-rose-200">
-                      <div className="text-rose-400 font-bold">💥 Hook #1 was skipped!</div>
-                      <div>1st Call in code is `points` -&gt; Reads Hook #1 state: <span className="text-cyan-400 font-bold">'VIP_GOLD'</span> (BUG: points is now a string!)</div>
-                      <div>2nd Call in code is `isActive` -&gt; Reads Hook #2 state: <span className="text-emerald-400 font-bold">100</span> (BUG: isActive is a number!)</div>
-                      <div>3rd Hook was expected but React ran out of hook calls!</div>
-                    </div>
-                    <div className="p-2 rounded bg-rose-950/80 border border-rose-800 text-[11px] text-rose-300">
-                      ⚠️ React throws: <em>"Error: Rendered fewer hooks than expected. This may be caused by an accidental early return statement."</em>
+                      <div className="text-rose-400 font-bold">{t.chapter4.corruptDesc}</div>
+                      <div>1st Call reads Hook #1 state: <span className="text-cyan-400 font-bold">'VIP_GOLD'</span> (points is a string!)</div>
+                      <div>2nd Call reads Hook #2 state: <span className="text-emerald-400 font-bold">100</span> (isActive is a number!)</div>
+                      <div>Hook count mismatch crashes component!</div>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Logs */}
-              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 min-h-[64px]">
+              <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 min-h-[64px]" dir="ltr">
                 {brokenOrderLogs.length === 0 ? (
-                  <div className="text-slate-500 italic">Toggle isVip above to observe the corruption</div>
+                  <div className="text-slate-500 italic">Toggle isVip above to test</div>
                 ) : (
                   brokenOrderLogs.map((l, i) => (
                     <div key={i} className={isVipCondition ? 'text-emerald-300' : 'text-rose-300'}>
@@ -252,26 +237,24 @@ export const Chapter4FiberLinkedList: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <Card
-          title="Rule #1: Top Level Only"
-          subtitle="Never call hooks inside loops, conditions, or nested functions"
+          title={t.chapter4.rule1Title}
+          subtitle={t.chapter4.rule1Subtitle}
           icon={<CheckCircle2 className="w-5 h-5 text-emerald-400" />}
           badge={<Badge variant="emerald">Invariant</Badge>}
         >
           <p className="text-sm text-slate-300 leading-relaxed">
-            By following this rule, you guarantee that hooks are called in the <strong className="text-white">exact same sequence on every single render</strong>.
-            This allows React to correctly match internal state to the right hook every time.
+            {t.chapter4.rule1Desc}
           </p>
         </Card>
 
         <Card
-          title="Rule #2: React Functions Only"
-          subtitle="Only call hooks from React function components or custom hooks"
+          title={t.chapter4.rule2Title}
+          subtitle={t.chapter4.rule2Subtitle}
           icon={<CheckCircle2 className="w-5 h-5 text-emerald-400" />}
           badge={<Badge variant="emerald">Scope</Badge>}
         >
           <p className="text-sm text-slate-300 leading-relaxed">
-            Do not call hooks from regular JavaScript functions.
-            Hooks require an active React Fiber rendering context to find <code className="text-emerald-300">ReactCurrentDispatcher</code>.
+            {t.chapter4.rule2Desc}
           </p>
         </Card>
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ProgressProvider, useProgress } from './context/ProgressContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Header } from './components/common/Header';
 import { Footer } from './components/common/Footer';
 import { Chapter1WhyState } from './components/chapters/Chapter1WhyState';
@@ -28,15 +29,17 @@ const MainContent: React.FC = () => {
 
 function App() {
   return (
-    <ProgressProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-slate-950">
-        <Header />
-        <div className="flex-1">
-          <MainContent />
+    <LanguageProvider>
+      <ProgressProvider>
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-slate-950">
+          <Header />
+          <div className="flex-1">
+            <MainContent />
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </ProgressProvider>
+      </ProgressProvider>
+    </LanguageProvider>
   );
 }
 

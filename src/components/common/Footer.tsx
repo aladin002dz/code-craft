@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle, RotateCcw, Sparkles } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
-import { CHAPTERS } from './Header';
+import { useLanguage } from '../../context/LanguageContext';
 import type { ChapterId } from '../../types';
 
 export const Footer: React.FC = () => {
@@ -15,9 +15,11 @@ export const Footer: React.FC = () => {
     progressPercentage
   } = useProgress();
 
-  const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter);
-  const prevChapter = currentIndex > 0 ? CHAPTERS[currentIndex - 1] : null;
-  const nextChapter = currentIndex < CHAPTERS.length - 1 ? CHAPTERS[currentIndex + 1] : null;
+  const { t, isRTL } = useLanguage();
+
+  const currentIndex = t.chapters.findIndex(c => c.id === currentChapter);
+  const prevChapter = currentIndex > 0 ? t.chapters[currentIndex - 1] : null;
+  const nextChapter = currentIndex < t.chapters.length - 1 ? t.chapters[currentIndex + 1] : null;
   const isCurrentCompleted = isChapterCompleted(currentChapter);
 
   const handleNavigate = (id: ChapterId) => {
@@ -50,8 +52,8 @@ export const Footer: React.FC = () => {
               onClick={() => handleNavigate(prevChapter.id)}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition-all border border-slate-700/60"
             >
-              <ChevronLeft className="w-4 h-4 text-cyan-400" />
-              <span>Previous: {prevChapter.shortTitle}</span>
+              {isRTL ? <ChevronRight className="w-4 h-4 text-cyan-400" /> : <ChevronLeft className="w-4 h-4 text-cyan-400" />}
+              <span>{t.footer.prev}: {prevChapter.shortTitle}</span>
             </button>
           ) : (
             <div className="hidden sm:block" />
@@ -70,12 +72,12 @@ export const Footer: React.FC = () => {
               {isCurrentCompleted ? (
                 <>
                   <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span>Module Completed!</span>
+                  <span>{t.footer.completed}</span>
                 </>
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
-                  <span>Complete & Next Module</span>
+                  <span>{t.footer.complete}</span>
                 </>
               )}
             </button>
@@ -87,8 +89,8 @@ export const Footer: React.FC = () => {
               onClick={() => handleNavigate(nextChapter.id)}
               className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold transition-all border border-slate-700/60"
             >
-              <span>Next: {nextChapter.shortTitle}</span>
-              <ChevronRight className="w-4 h-4 text-cyan-400" />
+              <span>{t.footer.next}: {nextChapter.shortTitle}</span>
+              {isRTL ? <ChevronLeft className="w-4 h-4 text-cyan-400" /> : <ChevronRight className="w-4 h-4 text-cyan-400" />}
             </button>
           ) : (
             <div className="hidden sm:block" />
@@ -98,12 +100,12 @@ export const Footer: React.FC = () => {
         {/* Footer Meta & Reset Progress */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 pt-4 border-t border-slate-900">
           <div>
-            Built with React 19, TypeScript, Tailwind CSS & Framer Motion. Total Progress: {progressPercentage}%
+            {t.footer.builtWith} {t.header.progress} {progressPercentage}%
           </div>
           <div className="flex items-center gap-4">
             <button
               onClick={() => {
-                if (window.confirm('Reset all your progress?')) {
+                if (window.confirm(t.footer.resetConfirm)) {
                   resetProgress();
                   playTone('step');
                 }
@@ -111,7 +113,7 @@ export const Footer: React.FC = () => {
               className="flex items-center gap-1 text-slate-500 hover:text-slate-300 transition-colors"
             >
               <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Progress</span>
+              <span>{t.footer.reset}</span>
             </button>
           </div>
         </div>

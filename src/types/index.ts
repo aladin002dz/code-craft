@@ -1,3 +1,5 @@
+export type Language = 'en' | 'fr' | 'ar';
+
 export type ChapterId = 
   | 'why-state'
   | 'anatomy'
@@ -11,6 +13,7 @@ export interface Chapter {
   id: ChapterId;
   number: number;
   title: string;
+  shortTitle: string;
   subtitle: string;
   badge: string;
   color: string;

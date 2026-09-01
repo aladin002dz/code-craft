@@ -3,23 +3,22 @@ import { Card } from '../common/Card';
 import { Badge } from '../common/Badge';
 import { RenderFlashingBox } from '../common/RenderFlashingBox';
 import { 
-  Copy, 
-  Layers, 
+  Boxes, 
+  Check, 
   Trash2, 
   Plus, 
-  Check, 
-  AlertOctagon, 
-  Database
+  Split
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
+import { useLanguage } from '../../context/LanguageContext';
 
-interface User {
+interface UserProfile {
   name: string;
   role: string;
-  avatar: string;
+  level: number;
 }
 
-interface Task {
+interface TodoItem {
   id: number;
   text: string;
   completed: boolean;
@@ -27,89 +26,85 @@ interface Task {
 
 export const Chapter5ComplexState: React.FC = () => {
   const { playTone } = useProgress();
+  const { t } = useLanguage();
 
-  // Object demo state
-  const [user, setUser] = useState<User>({
-    name: 'Sarah Connor',
-    role: 'Cyberpunk Rebel',
-    avatar: '👩‍🎤'
+  // Object State Sandbox
+  const [user, setUser] = useState<UserProfile>({
+    name: 'Alex Johnson',
+    role: 'Frontend Engineer',
+    level: 1,
   });
-  const [objectLogs, setObjectLogs] = useState<string[]>([]);
 
-  // Array demo state
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, text: 'Learn useState snapshot model', completed: true },
-    { id: 2, text: 'Avoid direct object mutation', completed: false },
-    { id: 3, text: 'Master array immutable updates', completed: false },
+  const [objectLogs, setObjectLogs] = useState<string[]>([
+    'Initial object stored at memory address 0x3F8A.'
   ]);
-  const [newTaskInput, setNewTaskInput] = useState('');
-  const [arrayLogs, setArrayLogs] = useState<string[]>([]);
 
-  // Mutating object trap demonstration
-  const handleMutateObjectDirectly = () => {
+  // Broken in-place mutation
+  const handleMutateDirectly = () => {
     playTone('error');
-    // Direct mutation in place!
-    user.name = 'Sarah (Mutated in RAM)';
-    setUser(user); // Passing same object reference!
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - Demonstrating bug
+    user.level += 1;
+    user.role = 'Senior Frontend Engineer';
+    // Passing the SAME object reference
+    setUser(user);
     setObjectLogs(prev => [
-      `⚠️ user.name changed in memory to "${user.name}", but Object.is(prev, next) returned TRUE! React skipped rendering.`,
+      `❌ Mutated in place! user.level is ${user.level} in RAM, but Object.is(prev, next) returned true. React skipped rendering!`,
       ...prev.slice(0, 3)
     ]);
   };
 
-  // Correct immutable object update
-  const handleUpdateObjectImmutably = () => {
-    playTone('click');
-    const roles = ['Tech Lead', 'Staff Engineer', 'Architect', 'DevOps Ninja'];
-    const randomRole = roles[Math.floor(Math.random() * roles.length)];
-    
+  // Correct immutable update
+  const handleUpdateImmutable = () => {
+    playTone('success');
     setUser(prev => ({
       ...prev,
-      name: 'Sarah Connor',
-      role: randomRole
+      level: prev.level + 1,
+      role: prev.level >= 2 ? 'Lead Architect' : 'Senior Engineer',
     }));
     setObjectLogs(prev => [
-      `✨ Created brand-new object reference via {...prev, role: "${randomRole}"}. React detected change and rendered!`,
+      `✅ Created fresh object with spread syntax (...prev). React detected new reference and re-rendered successfully!`,
       ...prev.slice(0, 3)
     ]);
   };
 
-  // Immutable Add Task
-  const handleAddTask = (e: React.FormEvent) => {
+  // Array State Sandbox (Todos)
+  const [todos, setTodos] = useState<TodoItem[]>([
+    { id: 1, text: 'Master useState fundamentals', completed: true },
+    { id: 2, text: 'Learn React Fiber linked list', completed: true },
+    { id: 3, text: 'Avoid direct array mutations', completed: false },
+  ]);
+
+  const [newTodoText, setNewTodoText] = useState('');
+
+  // Add Todo (...prev, newItem)
+  const handleAddTodo = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTaskInput.trim()) return;
+    if (!newTodoText.trim()) return;
     playTone('click');
-    const item: Task = {
+    const item: TodoItem = {
       id: Date.now(),
-      text: newTaskInput.trim(),
-      completed: false
+      text: newTodoText.trim(),
+      completed: false,
     };
-    setTasks(prev => [...prev, item]);
-    setNewTaskInput('');
-    setArrayLogs(prev => [
-      `✅ Added task via [...prev, newTask]. Fresh array reference generated!`,
-      ...prev.slice(0, 3)
-    ]);
+    setTodos(prev => [...prev, item]);
+    setNewTodoText('');
   };
 
-  // Immutable Toggle Task
-  const handleToggleTask = (id: number) => {
+  // Toggle Todo (prev.map)
+  const handleToggleTodo = (id: number) => {
     playTone('step');
-    setTasks(prev => prev.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
-    setArrayLogs(prev => [
-      `🔄 Toggled task #${id} using tasks.map(...) producing a new array with updated item.`,
-      ...prev.slice(0, 3)
-    ]);
+    setTodos(prev =>
+      prev.map(todo =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
   };
 
-  // Immutable Delete Task
-  const handleDeleteTask = (id: number) => {
-    playTone('click');
-    setTasks(prev => prev.filter(t => t.id !== id));
-    setArrayLogs(prev => [
-      `🗑️ Deleted task #${id} using tasks.filter(t => t.id !== ${id}).`,
-      ...prev.slice(0, 3)
-    ]);
+  // Delete Todo (prev.filter)
+  const handleDeleteTodo = (id: number) => {
+    playTone('step');
+    setTodos(prev => prev.filter(todo => todo.id !== id));
   };
 
   return (
@@ -117,194 +112,184 @@ export const Chapter5ComplexState: React.FC = () => {
       
       {/* Chapter Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-teal-950/40 via-slate-900/80 to-slate-950 border border-teal-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-          <Database className="w-64 h-64 text-teal-400" />
+        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
+          <Boxes className="w-64 h-64 text-teal-400" />
         </div>
         <div className="relative z-10 space-y-4 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="purple" size="md">Module 5</Badge>
-            <Badge variant="cyan" size="md">Immutability Patterns</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ 6 min read + interactive lab</span>
+            <Badge variant="emerald" size="md">{t.chapter5.badge1}</Badge>
+            <Badge variant="cyan" size="md">{t.chapter5.badge2}</Badge>
+            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter5.readTime}</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Managing Complex State: <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">Objects & Arrays</span>
+            {t.chapter5.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-400">{t.chapter5.titleAccent}</span>
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            In JavaScript, objects and arrays are passed by reference.
-            Mutating an object in place keeps the same memory pointer, tricking React into thinking nothing changed!
-            Let's master clean immutable patterns.
+            {t.chapter5.subtitle}
           </p>
         </div>
       </div>
 
-      {/* Object.is Shallow Equality Explanation Card */}
+      {/* Why Mutation Fails Card */}
       <Card
-        title="Why Mutation Fails: Object.is(prev, next)"
-        subtitle="React compares memory references, NOT deep values"
-        icon={<AlertOctagon className="w-5 h-5 text-amber-400" />}
-        badge={<Badge variant="amber">Shallow Equality</Badge>}
-        glowColor="amber"
+        title={t.chapter5.shallowTitle}
+        subtitle={t.chapter5.shallowSubtitle}
+        icon={<Boxes className="w-5 h-5 text-teal-400" />}
+        badge={<Badge variant="emerald">{t.chapter5.shallowBadge}</Badge>}
+        glowColor="cyan"
       >
         <div className="space-y-4 text-sm text-slate-300 leading-relaxed">
-          <p>
-            When you call <code className="text-amber-300 bg-amber-950/40 px-1.5 py-0.5 rounded">setUser(nextUser)</code>, React performs a shallow equality check:
-          </p>
-          <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-cyan-300">
-            Object.is(previousState, nextState) === true ? Bailout_No_Render : Schedule_Render
+          <p>{t.chapter5.shallowDesc}</p>
+          <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs text-teal-300 flex items-center justify-between overflow-x-auto" dir="ltr">
+            <span>{t.chapter5.shallowPointer}</span>
           </div>
-          <p>
-            If you mutated properties on the existing object, the memory pointer did not change. React assumes the data is identical and skips re-rendering!
-          </p>
         </div>
       </Card>
 
-      {/* Interactive Object State Lab */}
+      {/* Object State Interactive Lab */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Copy className="w-5 h-5 text-cyan-400" />
-          <span>Interactive Object Mutation vs Immutability Lab</span>
-        </h2>
+        <div className="flex items-center gap-2">
+          <Split className="w-5 h-5 text-teal-400" />
+          <h2 className="text-xl font-bold text-white">{t.chapter5.objLabTitle}</h2>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           
-          {/* Object Code Examples */}
+          {/* Object Mutation Code Comparison */}
           <div className="space-y-4">
             <div className="p-4 rounded-xl bg-rose-950/20 border border-rose-900/40 space-y-2">
-              <div className="text-xs font-bold text-rose-400 uppercase">❌ The Mutation Trap (Broken):</div>
-              <pre className="p-2 rounded bg-slate-950 font-mono text-xs text-rose-200 overflow-x-auto">
-{`function handleMutate() {
-  user.name = 'New Name'; // Mutates RAM
-  setUser(user);          // Same reference -> Skipped!
-}`}
+              <div className="text-xs font-bold text-rose-400 uppercase tracking-wider">{t.chapter5.trapTitle}</div>
+              <pre className="font-mono text-xs text-rose-200 p-2 rounded bg-slate-950 overflow-x-auto" dir="ltr">
+{`// ❌ Mutates object in place -> Same reference -> Skipped render\nuser.level += 1;\nsetUser(user);`}
               </pre>
             </div>
 
             <div className="p-4 rounded-xl bg-emerald-950/20 border border-emerald-900/40 space-y-2">
-              <div className="text-xs font-bold text-emerald-400 uppercase">✅ The Spread Pattern (Correct):</div>
-              <pre className="p-2 rounded bg-slate-950 font-mono text-xs text-emerald-200 overflow-x-auto">
-{`function handleUpdate() {
-  setUser(prev => ({
-    ...prev,
-    role: 'Tech Lead' // Brand new reference!
-  }));
-}`}
+              <div className="text-xs font-bold text-emerald-400 uppercase tracking-wider">{t.chapter5.spreadTitle}</div>
+              <pre className="font-mono text-xs text-emerald-200 p-2 rounded bg-slate-950 overflow-x-auto" dir="ltr">
+{`// ✅ Spread creates brand new object in memory\nsetUser(prev => ({\n  ...prev,\n  level: prev.level + 1\n}));`}
               </pre>
             </div>
           </div>
 
-          {/* Live Object Widget */}
-          <div className="space-y-4">
-            <RenderFlashingBox label="UserProfileComponent" flashColor="cyan" className="bg-slate-950">
-              <div className="space-y-4">
-                <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-4">
-                  <div className="text-4xl p-3 rounded-2xl bg-slate-800 border border-slate-700">
-                    {user.avatar}
-                  </div>
+          {/* Interactive Object Card */}
+          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+            <RenderFlashingBox label="UserProfileCard" flashColor="cyan" className="bg-slate-950">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                   <div>
-                    <div className="text-lg font-bold text-white">{user.name}</div>
-                    <div className="text-xs font-mono text-cyan-400 font-semibold">{user.role}</div>
+                    <h3 className="text-lg font-bold text-white">{user.name}</h3>
+                    <p className="text-xs text-teal-400 font-mono">{user.role}</p>
+                  </div>
+                  <div className="px-3 py-1 rounded-full bg-teal-950 text-teal-300 border border-teal-800 text-xs font-mono font-bold">
+                    Level {user.level}
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
                   <button
-                    onClick={handleMutateObjectDirectly}
-                    className="px-4 py-2.5 rounded-xl bg-rose-900/60 hover:bg-rose-800 text-rose-200 border border-rose-700/60 font-bold text-xs transition-all"
+                    onClick={handleMutateDirectly}
+                    className="px-3 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all shadow-md shadow-rose-950/40"
                   >
-                    Mutate Directly (user.name = ...)
+                    {t.chapter5.mutateDirectBtn}
                   </button>
                   <button
-                    onClick={handleUpdateObjectImmutably}
-                    className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-black text-xs transition-all shadow-lg shadow-teal-500/20"
+                    onClick={handleUpdateImmutable}
+                    className="px-3 py-2.5 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-400 hover:to-cyan-400 text-slate-950 font-black text-xs transition-all shadow-lg shadow-teal-500/20"
                   >
-                    Update via Spread (...prev)
+                    {t.chapter5.updateSpreadBtn}
                   </button>
                 </div>
               </div>
             </RenderFlashingBox>
 
-            <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-slate-400 max-h-24 overflow-y-auto">
-              {objectLogs.length === 0 ? '> Click buttons to test object updating' : objectLogs.map((l, i) => <div key={i}>&gt; {l}</div>)}
+            {/* Logs */}
+            <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[11px] text-slate-400 max-h-24 overflow-y-auto" dir="ltr">
+              {objectLogs.map((log, i) => (
+                <div key={i} className="text-teal-300/90 leading-relaxed">&gt; {log}</div>
+              ))}
             </div>
           </div>
 
         </div>
       </div>
 
-      {/* Interactive Array Immutability Sandbox */}
+      {/* Array State Interactive Lab (Pure Methods) */}
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <Layers className="w-5 h-5 text-emerald-400" />
-          <span>Interactive Array Operations Lab</span>
+          <Boxes className="w-5 h-5 text-cyan-400" />
+          <span>{t.chapter5.arrayLabTitle}</span>
         </h2>
 
-        <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-6">
-          
-          {/* Quick Operations Cheatsheet */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono">
-            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-              <span className="text-cyan-400 font-bold">1. Adding:</span>
-              <div className="text-slate-300 mt-1">[...prev, newItem]</div>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-              <span className="text-emerald-400 font-bold">2. Updating:</span>
-              <div className="text-slate-300 mt-1">prev.map(item =&gt; ...)</div>
-            </div>
-            <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800">
-              <span className="text-rose-400 font-bold">3. Removing:</span>
-              <div className="text-slate-300 mt-1">prev.filter(t =&gt; t.id !== id)</div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+            <span className="text-emerald-400 font-bold">{t.chapter5.opAdd}</span>
+            <div className="text-slate-300" dir="ltr">[...prev, newItem]</div>
           </div>
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+            <span className="text-cyan-400 font-bold">{t.chapter5.opUpdate}</span>
+            <div className="text-slate-300" dir="ltr">prev.map(item =&gt; ...)</div>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+            <span className="text-rose-400 font-bold">{t.chapter5.opRemove}</span>
+            <div className="text-slate-300" dir="ltr">prev.filter(item =&gt; ...)</div>
+          </div>
+        </div>
 
-          {/* Live Task List */}
-          <RenderFlashingBox label="TodoListComponent" flashColor="emerald" className="bg-slate-900/60">
+        {/* Live Todo Playground */}
+        <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-4">
+          <RenderFlashingBox label="ImmutableTodoList" flashColor="cyan" className="bg-slate-950">
             <div className="space-y-4">
               
               {/* Form Input */}
-              <form onSubmit={handleAddTask} className="flex gap-2">
+              <form onSubmit={handleAddTodo} className="flex gap-2">
                 <input
                   type="text"
-                  value={newTaskInput}
-                  onChange={(e) => setNewTaskInput(e.target.value)}
-                  placeholder="Type a new task to add immutably..."
-                  className="flex-1 px-4 py-2 rounded-xl bg-slate-950 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans"
+                  value={newTodoText}
+                  onChange={(e) => setNewTodoText(e.target.value)}
+                  placeholder={t.chapter5.taskPlaceholder}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
                 />
                 <button
                   type="submit"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition-colors"
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add [...prev, item]</span>
+                  <span>{t.chapter5.addTaskBtn}</span>
                 </button>
               </form>
 
-              {/* Items */}
+              {/* Todo Items */}
               <div className="space-y-2">
-                {tasks.map((task) => (
+                {todos.map((todo) => (
                   <div
-                    key={task.id}
-                    className="flex items-center justify-between p-3 rounded-xl bg-slate-950/80 border border-slate-800 hover:border-slate-700 transition-colors"
+                    key={todo.id}
+                    className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
+                      todo.completed
+                        ? 'bg-slate-900/40 border-slate-800 text-slate-500'
+                        : 'bg-slate-900 border-slate-800 text-slate-200'
+                    }`}
                   >
                     <button
-                      onClick={() => handleToggleTask(task.id)}
-                      className="flex items-center gap-3 text-left flex-1"
+                      onClick={() => handleToggleTodo(todo.id)}
+                      className="flex items-center gap-3 flex-1 text-left rtl:text-right"
                     >
                       <div className={`w-5 h-5 rounded-md flex items-center justify-center border transition-all ${
-                        task.completed
+                        todo.completed
                           ? 'bg-emerald-500 border-emerald-400 text-slate-950'
-                          : 'border-slate-700 hover:border-cyan-400'
+                          : 'border-slate-700 bg-slate-950'
                       }`}>
-                        {task.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
+                        {todo.completed && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </div>
-                      <span className={`text-sm ${task.completed ? 'line-through text-slate-500' : 'text-slate-200'}`}>
-                        {task.text}
+                      <span className={`text-sm ${todo.completed ? 'line-through text-slate-500' : 'font-medium'}`}>
+                        {todo.text}
                       </span>
                     </button>
 
                     <button
-                      onClick={() => handleDeleteTask(task.id)}
+                      onClick={() => handleDeleteTodo(todo.id)}
                       className="p-1.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-950/30 transition-colors"
-                      title="Delete via .filter()"
+                      title="Delete item via .filter()"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -314,12 +299,6 @@ export const Chapter5ComplexState: React.FC = () => {
 
             </div>
           </RenderFlashingBox>
-
-          {/* Trace log */}
-          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-[11px] text-slate-400 max-h-24 overflow-y-auto">
-            {arrayLogs.length === 0 ? '> Add, toggle, or delete tasks above' : arrayLogs.map((l, i) => <div key={i} className="text-emerald-300/90">&gt; {l}</div>)}
-          </div>
-
         </div>
       </div>
 

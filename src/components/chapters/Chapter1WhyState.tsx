@@ -13,18 +13,20 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Dummy variable simulating plain JavaScript variable
 let globalLetCounter = 0;
 
 export const Chapter1WhyState: React.FC = () => {
   const { playTone } = useProgress();
+  const { t } = useLanguage();
 
   // Local variable simulation state for demonstration
   const [dummyRenderTrigger, setDummyRenderTrigger] = useState(0);
   const [localVariableValue, setLocalVariableValue] = useState(0);
   const [variableLogs, setVariableLogs] = useState<string[]>([
-    'System initialized. let count = 0 in memory.'
+    'let count = 0 initialized in RAM.'
   ]);
 
   // Real React State counter
@@ -38,19 +40,18 @@ export const Chapter1WhyState: React.FC = () => {
     setLocalVariableValue(globalLetCounter);
     playTone('click');
     setVariableLogs(prev => [
-      `Clicked: variable in RAM = ${globalLetCounter}, but React was NOT notified! UI is still showing old value.`,
+      `RAM: count = ${globalLetCounter}, UI not updated.`,
       ...prev.slice(0, 4)
     ]);
   };
 
   const handleForceRerender = () => {
-    // Reset local let back to 0 to simulate function call re-execution
     globalLetCounter = 0;
     setLocalVariableValue(0);
     setDummyRenderTrigger(prev => prev + 1);
     playTone('render');
     setVariableLogs(prev => [
-      '⚠️ Component re-rendered! Local variables in function scope wiped back to 0!',
+      '⚠️ Re-rendered! Local variables wiped to 0!',
       ...prev.slice(0, 4)
     ]);
   };
@@ -59,7 +60,7 @@ export const Chapter1WhyState: React.FC = () => {
     playTone('click');
     setReactStateCount(prev => prev + 1);
     setStateLogs(prev => [
-      `setCount(${reactStateCount + 1}) called -> React schedules re-render -> DOM updated to ${reactStateCount + 1}!`,
+      `setCount(${reactStateCount + 1}) -> Re-render scheduled -> DOM: ${reactStateCount + 1}`,
       ...prev.slice(0, 4)
     ]);
   };
@@ -75,21 +76,20 @@ export const Chapter1WhyState: React.FC = () => {
       
       {/* Chapter Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-cyan-950/40 via-slate-900/80 to-slate-950 border border-cyan-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
           <Cpu className="w-64 h-64 text-cyan-400" />
         </div>
         <div className="relative z-10 space-y-4 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="cyan" size="md">Module 1</Badge>
-            <Badge variant="purple" size="md">Mental Models</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ 4 min read + live sandbox</span>
+            <Badge variant="cyan" size="md">{t.chapter1.badge1}</Badge>
+            <Badge variant="purple" size="md">{t.chapter1.badge2}</Badge>
+            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter1.readTime}</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">"Why State?"</span> Dilemma
+            {t.chapter1.title} <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">{t.chapter1.titleAccent}</span>
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            Every beginner asks: <span className="text-cyan-300 font-mono italic">"Why can't I just declare `let count = 0` and increment it?"</span>
-            Let's dissect why normal variables fail in React and why React needs a specialized state engine.
+            {t.chapter1.subtitle}
           </p>
         </div>
       </div>
@@ -99,40 +99,32 @@ export const Chapter1WhyState: React.FC = () => {
         
         {/* Problem 1 */}
         <Card
-          title="Problem #1: Scope Oblivion"
-          subtitle="Local variables do not persist across renders"
+          title={t.chapter1.prob1Title}
+          subtitle={t.chapter1.prob1Subtitle}
           icon={<AlertTriangle className="w-5 h-5 text-rose-400" />}
-          badge={<Badge variant="rose">RAM Stack</Badge>}
+          badge={<Badge variant="rose">{t.chapter1.prob1Badge}</Badge>}
           glowColor="rose"
         >
           <div className="space-y-3 text-sm text-slate-300">
-            <p>
-              In React, your component is just a <strong className="text-white">JavaScript function</strong>.
-              When React renders your component, it executes that function from line 1 to the end.
-            </p>
+            <p>{t.chapter1.prob1Desc}</p>
             <p className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-300">
-              When a JavaScript function returns, its local call-stack variables are garbage collected.
-              Next time the function is called, <span className="text-rose-400 font-bold">`let count = 0` runs again from scratch</span>!
+              {t.chapter1.prob1Box}
             </p>
           </div>
         </Card>
 
         {/* Problem 2 */}
         <Card
-          title="Problem #2: React is Unaware"
-          subtitle="Mutations don't trigger re-rendering"
+          title={t.chapter1.prob2Title}
+          subtitle={t.chapter1.prob2Subtitle}
           icon={<HelpCircle className="w-5 h-5 text-amber-400" />}
-          badge={<Badge variant="amber">Reconciliation</Badge>}
+          badge={<Badge variant="amber">{t.chapter1.prob2Badge}</Badge>}
           glowColor="amber"
         >
           <div className="space-y-3 text-sm text-slate-300">
-            <p>
-              Doing <code className="text-amber-300 bg-amber-950/40 px-1.5 py-0.5 rounded">count = count + 1</code> changes 4 bytes in your computer's RAM.
-              However, React does <strong className="text-white">not watch or poll your variables</strong>.
-            </p>
+            <p>{t.chapter1.prob2Desc}</p>
             <p className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-mono text-slate-300">
-              Without calling a React setter function, React has <span className="text-amber-400 font-bold">zero idea</span> anything changed,
-              so it will never re-run the component or update the DOM.
+              {t.chapter1.prob2Box}
             </p>
           </div>
         </Card>
@@ -144,10 +136,10 @@ export const Chapter1WhyState: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Flame className="w-5 h-5 text-cyan-400" />
-            <h2 className="text-xl font-bold text-white">Interactive Comparison Sandbox</h2>
+            <h2 className="text-xl font-bold text-white">{t.chapter1.sandboxTitle}</h2>
           </div>
           <span className="text-xs text-slate-400 hidden sm:inline">
-            Click both buttons and watch what happens to the UI and memory
+            {t.chapter1.sandboxSubtitle}
           </span>
         </div>
 
@@ -158,23 +150,14 @@ export const Chapter1WhyState: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-rose-500 animate-pulse" />
-                <h3 className="font-bold text-rose-300 text-base">Regular JavaScript Variable</h3>
+                <h3 className="font-bold text-rose-300 text-base">{t.chapter1.varTitle}</h3>
               </div>
-              <Badge variant="rose">Fails in React</Badge>
+              <Badge variant="rose">{t.chapter1.varBadge}</Badge>
             </div>
 
             <CodeBlock
               filename="PlainVariableCounter.jsx"
-              code={`function PlainCounter() {
-  let count = 0; // ⚠️ Wiped on every render!
-
-  function handleClick() {
-    count = count + 1;
-    // Mutates RAM, but React is never notified!
-  }
-
-  return <div>Count: {count}</div>;
-}`}
+              code={`function PlainCounter() {\n  let count = 0; // ⚠️ Wiped on every render!\n\n  function handleClick() {\n    count = count + 1;\n    // Mutates RAM, but React is never notified!\n  }\n\n  return <div>Count: {count}</div>;\n}`}
             />
 
             {/* Live Interactive Widget */}
@@ -186,17 +169,17 @@ export const Chapter1WhyState: React.FC = () => {
             >
               <div className="space-y-4 text-center">
                 <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                  <div className="text-xs text-slate-400 mb-1">Rendered UI Display:</div>
+                  <div className="text-xs text-slate-400 mb-1">{t.chapter1.varUiDisplay}</div>
                   <div className="text-4xl font-black text-rose-400 font-mono">
                     0
                   </div>
                   <div className="text-[11px] text-rose-300/80 mt-1 font-mono">
-                    (UI is stuck at 0 because no re-render was triggered!)
+                    {t.chapter1.varUiStuck}
                   </div>
                 </div>
 
                 <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-xs flex items-center justify-between font-mono">
-                  <span className="text-slate-400">Actual Value in RAM:</span>
+                  <span className="text-slate-400">{t.chapter1.varRamValue}</span>
                   <span className="text-rose-400 font-bold text-sm">{localVariableValue}</span>
                 </div>
 
@@ -205,23 +188,23 @@ export const Chapter1WhyState: React.FC = () => {
                     onClick={handleRegularVarClick}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all shadow-lg shadow-rose-900/40"
                   >
-                    Increment Variable ({localVariableValue})
+                    {t.chapter1.varIncrementBtn} ({localVariableValue})
                   </button>
                   <button
                     onClick={handleForceRerender}
                     className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-all border border-slate-700"
-                    title="Simulate what happens when another prop or state causes this component to re-render"
+                    title="Simulate re-render"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Re-render</span>
+                    <span>{t.chapter1.varRerenderBtn}</span>
                   </button>
                 </div>
               </div>
             </RenderFlashingBox>
 
             {/* Console output */}
-            <div className="p-3 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs space-y-1 text-slate-400 max-h-32 overflow-y-auto">
-              <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Console Trace:</div>
+            <div className="p-3 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs space-y-1 text-slate-400 max-h-32 overflow-y-auto" dir="ltr">
+              <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{t.chapter1.consoleTrace}</div>
               {variableLogs.map((log, i) => (
                 <div key={i} className="text-rose-300/90 text-[11px] leading-tight">
                   &gt; {log}
@@ -235,23 +218,14 @@ export const Chapter1WhyState: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 rounded-full bg-cyan-400 animate-pulse" />
-                <h3 className="font-bold text-cyan-300 text-base">React useState Hook</h3>
+                <h3 className="font-bold text-cyan-300 text-base">{t.chapter1.stateTitle}</h3>
               </div>
-              <Badge variant="cyan">The React Way</Badge>
+              <Badge variant="cyan">{t.chapter1.stateBadge}</Badge>
             </div>
 
             <CodeBlock
               filename="StateCounter.jsx"
-              code={`function StateCounter() {
-  // State is preserved in React's Fiber memory outside function!
-  const [count, setCount] = useState(0);
-
-  function handleClick() {
-    setCount(count + 1); // Tells React: "Re-render me with count + 1!"
-  }
-
-  return <div>Count: {count}</div>;
-}`}
+              code={`function StateCounter() {\n  const [count, setCount] = useState(0);\n\n  function handleClick() {\n    setCount(count + 1); // Tells React to re-render with count + 1!\n  }\n\n  return <div>Count: {count}</div>;\n}`}
             />
 
             {/* Live Interactive Widget */}
@@ -262,17 +236,17 @@ export const Chapter1WhyState: React.FC = () => {
             >
               <div className="space-y-4 text-center">
                 <div className="p-4 rounded-xl bg-slate-900 border border-slate-800">
-                  <div className="text-xs text-slate-400 mb-1">Rendered UI Display:</div>
+                  <div className="text-xs text-slate-400 mb-1">{t.chapter1.stateUiDisplay}</div>
                   <div className="text-4xl font-black text-cyan-400 font-mono">
                     {reactStateCount}
                   </div>
                   <div className="text-[11px] text-cyan-300/80 mt-1 font-mono">
-                    (UI updates automatically on every render!)
+                    {t.chapter1.stateUiAuto}
                   </div>
                 </div>
 
                 <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 text-xs flex items-center justify-between font-mono">
-                  <span className="text-slate-400">Stored in React Fiber Node:</span>
+                  <span className="text-slate-400">{t.chapter1.stateFiberValue}</span>
                   <span className="text-cyan-400 font-bold text-sm">{reactStateCount}</span>
                 </div>
 
@@ -281,22 +255,22 @@ export const Chapter1WhyState: React.FC = () => {
                     onClick={handleStateClick}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black text-xs transition-all shadow-lg shadow-cyan-500/25"
                   >
-                    Increment with setCount() ({reactStateCount})
+                    {t.chapter1.stateIncrementBtn} ({reactStateCount})
                   </button>
                   <button
                     onClick={handleResetState}
                     className="flex items-center justify-center gap-1 px-3 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition-all border border-slate-700"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
-                    <span>Reset</span>
+                    <span>{t.chapter1.stateResetBtn}</span>
                   </button>
                 </div>
               </div>
             </RenderFlashingBox>
 
             {/* Console output */}
-            <div className="p-3 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs space-y-1 text-slate-400 max-h-32 overflow-y-auto">
-              <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">Console Trace:</div>
+            <div className="p-3 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs space-y-1 text-slate-400 max-h-32 overflow-y-auto" dir="ltr">
+              <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">{t.chapter1.consoleTrace}</div>
               {stateLogs.map((log, i) => (
                 <div key={i} className="text-cyan-300/90 text-[11px] leading-tight">
                   &gt; {log}
@@ -315,12 +289,10 @@ export const Chapter1WhyState: React.FC = () => {
         </div>
         <div className="space-y-1 flex-1">
           <h4 className="text-base font-bold text-white flex items-center gap-2">
-            The Fundamental Mental Model
+            {t.chapter1.modelTitle}
           </h4>
           <p className="text-sm text-slate-300 leading-relaxed">
-            Think of <strong className="text-cyan-300">useState</strong> as a persistent vault that lives <strong className="text-white">outside</strong> your function component.
-            When your component runs, it asks React: <em className="text-cyan-200">"Give me my stored value from the vault."</em>
-            When you call <strong className="text-cyan-300">setCount</strong>, you update the vault and ring React's doorbell to re-run your component with the updated value!
+            {t.chapter1.modelDesc}
           </p>
         </div>
       </div>

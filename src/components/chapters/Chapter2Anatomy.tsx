@@ -11,11 +11,13 @@ import {
   Layers
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 type SyntaxToken = 'destructuring' | 'state' | 'setter' | 'hook' | 'initial';
 
 export const Chapter2Anatomy: React.FC = () => {
   const { playTone } = useProgress();
+  const { t } = useLanguage();
 
   // Active token for syntax dissection
   const [activeToken, setActiveToken] = useState<SyntaxToken>('state');
@@ -52,53 +54,34 @@ export const Chapter2Anatomy: React.FC = () => {
 
   const tokenDetails: Record<SyntaxToken, { title: string; badge: string; description: string; codeExample: string }> = {
     destructuring: {
-      title: 'JavaScript Array Destructuring `[ ... ]`',
-      badge: 'JS Feature',
-      description: 'useState returns a 2-element tuple: [currentValue, updateFunction]. Array destructuring lets you name these two variables whatever you want concisely without renaming object properties.',
-      codeExample: `// Under the hood, useState returns an array of length 2:
-const stateTuple = useState(0);
-const count = stateTuple[0];    // 1st item: Current Value
-const setCount = stateTuple[1]; // 2nd item: Dispatcher Function`
+      title: t.chapter2.destructuringTitle,
+      badge: t.chapter2.destructuringBadge,
+      description: t.chapter2.destructuringDesc,
+      codeExample: `// Under the hood, useState returns an array of length 2:\nconst stateTuple = useState(0);\nconst count = stateTuple[0];    // 1st item: Current Value\nconst setCount = stateTuple[1]; // 2nd item: Dispatcher Function`
     },
     state: {
-      title: 'The State Variable (`count`)',
-      badge: 'Read-only Value',
-      description: 'Holds the value of this state for the CURRENT render. It is a constant (const) within this specific function execution. You cannot reassign it (e.g. count = 5 is forbidden).',
-      codeExample: `// In this render snapshot, 'count' is frozen at its current value
-console.log(count); // e.g. 42
-// ❌ count = 43 (TypeError: Assignment to constant variable)`
+      title: t.chapter2.stateVarTitle,
+      badge: t.chapter2.stateVarBadge,
+      description: t.chapter2.stateVarDesc,
+      codeExample: `// In this render snapshot, 'count' is frozen at its current value\nconsole.log(count); // e.g. 42\n// ❌ count = 43 (TypeError: Assignment to constant variable)`
     },
     setter: {
-      title: 'The Setter / Dispatcher (`setCount`)',
-      badge: 'Trigger / Dispatcher',
-      description: 'A function that accepts either a new value (setCount(5)) or an updater callback (setCount(prev => prev + 1)). Calling it informs React that state has changed and schedules a re-render.',
-      codeExample: `// Direct value:
-setCount(10);
-
-// Functional updater (Safe for concurrent or queued updates):
-setCount(prevCount => prevCount + 1);`
+      title: t.chapter2.setterTitle,
+      badge: t.chapter2.setterBadge,
+      description: t.chapter2.setterDesc,
+      codeExample: `// Direct value:\nsetCount(10);\n\n// Functional updater:\nsetCount(prevCount => prevCount + 1);`
     },
     hook: {
-      title: 'The `useState` Hook Identifier',
-      badge: 'React API',
-      description: 'A built-in React hook. The "use" prefix tells React and linters that this function must adhere to the Rules of Hooks (only call at top level, only in React function components or custom hooks).',
-      codeExample: `import { useState } from 'react';
-
-// Hooks must always be called at the top level:
-function MyComponent() {
-  const [value, setValue] = useState(0);
-  // ...
-}`
+      title: t.chapter2.hookTitle,
+      badge: t.chapter2.hookBadge,
+      description: t.chapter2.hookDesc,
+      codeExample: `import { useState } from 'react';\n\n// Top level in React components or custom hooks:\nfunction MyComponent() {\n  const [value, setValue] = useState(0);\n}`
     },
     initial: {
-      title: 'Initial State Argument `(initialValue)`',
-      badge: 'Mount Argument',
-      description: 'The value state will have on the VERY FIRST render (mount). On subsequent re-renders, React ignores this argument and returns the latest state stored in the Fiber node.',
-      codeExample: `// Eager value: (Evaluated on mount, ignored on re-render)
-const [count, setCount] = useState(0);
-
-// Lazy Initializer: (Runs ONLY on mount, prevents lag on re-renders!)
-const [data, setData] = useState(() => calculateMassiveDataset());`
+      title: t.chapter2.initialTitle,
+      badge: t.chapter2.initialBadge,
+      description: t.chapter2.initialDesc,
+      codeExample: `// Eager value:\nconst [count, setCount] = useState(0);\n\n// Lazy Initializer:\nconst [data, setData] = useState(() => calculateMassiveDataset());`
     },
   };
 
@@ -107,21 +90,20 @@ const [data, setData] = useState(() => calculateMassiveDataset());`
       
       {/* Chapter Hero */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-blue-950/40 via-slate-900/80 to-slate-950 border border-blue-800/40 p-6 md:p-10 shadow-2xl">
-        <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+        <div className="absolute top-0 right-0 rtl:right-auto rtl:left-0 p-8 opacity-10 pointer-events-none">
           <Microscope className="w-64 h-64 text-blue-400" />
         </div>
         <div className="relative z-10 space-y-4 max-w-3xl">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="purple" size="md">Module 2</Badge>
-            <Badge variant="cyan" size="md">Syntax & Performance</Badge>
-            <span className="text-xs text-slate-400 font-mono">⏱️ 5 min read + interactive lab</span>
+            <Badge variant="purple" size="md">{t.chapter2.badge1}</Badge>
+            <Badge variant="cyan" size="md">{t.chapter2.badge2}</Badge>
+            <span className="text-xs text-slate-400 font-mono">⏱️ {t.chapter2.readTime}</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-tight">
-            Anatomy of <code className="text-cyan-400 font-mono">useState</code> & Lazy Initialization
+            {t.chapter2.title} <code className="text-cyan-400 font-mono">{t.chapter2.titleAccent}</code>
           </h1>
           <p className="text-base md:text-lg text-slate-300 leading-relaxed">
-            Let's put the syntax under an interactive microscope to understand what each token does,
-            why array destructuring was chosen, and how <strong className="text-cyan-300">lazy initial state</strong> prevents hidden performance bottlenecks.
+            {t.chapter2.subtitle}
           </p>
         </div>
       </div>
@@ -130,14 +112,14 @@ const [data, setData] = useState(() => calculateMassiveDataset());`
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Microscope className="w-5 h-5 text-cyan-400" />
-          <h2 className="text-xl font-bold text-white">Interactive Syntax Microscope</h2>
+          <h2 className="text-xl font-bold text-white">{t.chapter2.microscopeTitle}</h2>
         </div>
         <p className="text-sm text-slate-400">
-          Click any part of the declaration below to inspect its purpose, rules, and internal behavior:
+          {t.chapter2.microscopeSubtitle}
         </p>
 
         {/* Clickable Code Tokens */}
-        <div className="p-6 md:p-8 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-center gap-2 md:gap-3 text-lg md:text-2xl font-mono shadow-2xl">
+        <div className="p-6 md:p-8 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap items-center justify-center gap-2 md:gap-3 text-lg md:text-2xl font-mono shadow-2xl" dir="ltr">
           <span className="text-purple-400 font-semibold select-none">const</span>
           
           <button
@@ -253,58 +235,52 @@ const [data, setData] = useState(() => calculateMassiveDataset());`
         </div>
       </div>
 
-      {/* Why Array Destructuring vs Object Destructuring Callout */}
+      {/* Why Array Destructuring vs Object Destructuring */}
       <Card
-        title="Why Array Destructuring Instead of Object?"
-        subtitle="The clever ergonomics of React Hook design"
+        title={t.chapter2.whyArrayTitle}
+        subtitle={t.chapter2.whyArraySubtitle}
         icon={<Layers className="w-5 h-5 text-purple-400" />}
-        badge={<Badge variant="purple">Architecture</Badge>}
+        badge={<Badge variant="purple">{t.chapter2.whyArrayBadge}</Badge>}
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300 pt-2">
           <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
             <div className="font-bold text-rose-400 text-xs uppercase tracking-wider">
-              If useState returned an Object:
+              {t.chapter2.ifObject}
             </div>
-            <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto">
-{`// ❌ Clunky renaming needed for multiple states:
-const { value: name, setValue: setName } = useState('Alice');
-const { value: age, setValue: setAge } = useState(25);`}
+            <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto" dir="ltr">
+{`const { value: name, setValue: setName } = useState('Alice');\nconst { value: age, setValue: setAge } = useState(25);`}
             </pre>
             <p className="text-xs text-slate-400">
-              You would have to alias every single property with <code className="text-rose-300">: alias</code>.
+              {t.chapter2.ifObjectDesc}
             </p>
           </div>
 
           <div className="p-4 rounded-xl bg-slate-950/70 border border-emerald-900/40 space-y-2">
             <div className="font-bold text-emerald-400 text-xs uppercase tracking-wider">
-              With Array Destructuring (The React Way):
+              {t.chapter2.withArray}
             </div>
-            <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto">
-{`// ✅ Clean, expressive, free naming:
-const [name, setName] = useState('Alice');
-const [age, setAge] = useState(25);`}
+            <pre className="font-mono text-xs text-slate-300 p-2 rounded bg-slate-900 overflow-x-auto" dir="ltr">
+{`const [name, setName] = useState('Alice');\nconst [age, setAge] = useState(25);`}
             </pre>
             <p className="text-xs text-slate-400">
-              Positional array unpacking gives you complete freedom to name variables intuitively.
+              {t.chapter2.withArrayDesc}
             </p>
           </div>
         </div>
       </Card>
 
-      {/* Lazy Initial State Deep Dive & Benchmark Simulator */}
+      {/* Lazy Initial State Deep Dive */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-amber-400" />
-            <h2 className="text-xl font-bold text-white">Lazy Initial State Benchmark Lab</h2>
+            <h2 className="text-xl font-bold text-white">{t.chapter2.lazyTitle}</h2>
           </div>
-          <Badge variant="amber">Performance Pro-Tip</Badge>
+          <Badge variant="amber">{t.chapter2.lazyBadge}</Badge>
         </div>
 
         <p className="text-sm text-slate-300 leading-relaxed">
-          If your initial state requires heavy computation (like reading local storage or generating large matrices),
-          passing a direct function call <code className="text-rose-300 bg-rose-950/40 px-1.5 py-0.5 rounded">useState(compute())</code> runs that function on <strong className="text-white">every single re-render</strong>!
-          Using a lazy callback <code className="text-emerald-300 bg-emerald-950/40 px-1.5 py-0.5 rounded">useState(() =&gt; compute())</code> runs it <strong className="text-white">only once on mount</strong>.
+          {t.chapter2.lazyDesc}
         </p>
 
         {/* Live Benchmark Simulator Comparison */}
@@ -315,39 +291,38 @@ const [age, setAge] = useState(25);`}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 text-rose-400" />
-                <h3 className="font-bold text-rose-300 text-base">Eager Initializer (Slow)</h3>
+                <h3 className="font-bold text-rose-300 text-base">{t.chapter2.eagerTitle}</h3>
               </div>
-              <Badge variant="rose">Re-computes Every Render</Badge>
+              <Badge variant="rose">{t.chapter2.eagerBadge}</Badge>
             </div>
 
             <CodeBlock
               filename="EagerInit.jsx"
-              code={`// ⚠️ computeMatrix() is called on EVERY re-render!
-const [matrix, setMatrix] = useState(computeHeavyMatrix());`}
+              code={`// ⚠️ computeMatrix() is called on EVERY re-render!\nconst [matrix, setMatrix] = useState(computeHeavyMatrix());`}
             />
 
             <RenderFlashingBox label="EagerComponent" flashColor="rose" className="bg-slate-950">
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3 text-center">
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-                    <div className="text-[11px] text-slate-400">Total Re-renders:</div>
+                    <div className="text-[11px] text-slate-400">{t.chapter2.eagerRenders}</div>
                     <div className="text-2xl font-black text-rose-400 font-mono">{eagerRenders}</div>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-                    <div className="text-[11px] text-slate-400">Times Expensive Fn Ran:</div>
+                    <div className="text-[11px] text-slate-400">{t.chapter2.eagerRuns}</div>
                     <div className="text-2xl font-black text-rose-400 font-mono">{eagerCalculations}</div>
                   </div>
                 </div>
 
                 <div className="text-xs text-rose-300/80 font-mono text-center p-2 rounded bg-rose-950/30 border border-rose-900/30">
-                  ⚠️ Wasting CPU: Called {eagerCalculations} times for 0 reason!
+                  {t.chapter2.eagerWarning}
                 </div>
 
                 <button
                   onClick={handleEagerClick}
                   className="w-full px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs transition-all shadow-lg shadow-rose-950/40"
                 >
-                  Trigger Re-render (Calls computeHeavyMatrix again!)
+                  {t.chapter2.eagerBtn}
                 </button>
               </div>
             </RenderFlashingBox>
@@ -358,39 +333,38 @@ const [matrix, setMatrix] = useState(computeHeavyMatrix());`}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <h3 className="font-bold text-emerald-300 text-base">Lazy Initializer (Fast & Optimal)</h3>
+                <h3 className="font-bold text-emerald-300 text-base">{t.chapter2.lazyCardTitle}</h3>
               </div>
-              <Badge variant="emerald">Runs Once on Mount</Badge>
+              <Badge variant="emerald">{t.chapter2.lazyCardBadge}</Badge>
             </div>
 
             <CodeBlock
               filename="LazyInit.jsx"
-              code={`// ✅ Function passed as reference; React only invokes it on mount!
-const [matrix, setMatrix] = useState(() => computeHeavyMatrix());`}
+              code={`// ✅ Function passed as reference; React only invokes it on mount!\nconst [matrix, setMatrix] = useState(() => computeHeavyMatrix());`}
             />
 
             <RenderFlashingBox label="LazyComponent" flashColor="emerald" className="bg-slate-950">
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-3 text-center">
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-                    <div className="text-[11px] text-slate-400">Total Re-renders:</div>
+                    <div className="text-[11px] text-slate-400">{t.chapter2.lazyRendersLabel}</div>
                     <div className="text-2xl font-black text-emerald-400 font-mono">{lazyRenders}</div>
                   </div>
                   <div className="p-3 rounded-lg bg-slate-900 border border-slate-800">
-                    <div className="text-[11px] text-slate-400">Times Expensive Fn Ran:</div>
+                    <div className="text-[11px] text-slate-400">{t.chapter2.lazyRunsLabel}</div>
                     <div className="text-2xl font-black text-emerald-400 font-mono">{lazyCalculations}</div>
                   </div>
                 </div>
 
                 <div className="text-xs text-emerald-300/80 font-mono text-center p-2 rounded bg-emerald-950/30 border border-emerald-900/30">
-                  ✨ Perfect: Executed only 1 time during initial mount!
+                  {t.chapter2.lazySuccess}
                 </div>
 
                 <button
                   onClick={handleLazyClick}
                   className="w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-black text-xs transition-all shadow-lg shadow-emerald-950/40"
                 >
-                  Trigger Re-render (Zero CPU wasted!)
+                  {t.chapter2.lazyBtn}
                 </button>
               </div>
             </RenderFlashingBox>
@@ -403,7 +377,7 @@ const [matrix, setMatrix] = useState(() => computeHeavyMatrix());`}
             onClick={handleResetBenchmark}
             className="text-xs text-slate-400 hover:text-slate-200 underline font-mono"
           >
-            Reset Benchmark Numbers
+            {t.chapter2.resetBenchmark}
           </button>
         </div>
       </div>

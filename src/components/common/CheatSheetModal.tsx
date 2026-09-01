@@ -1,7 +1,7 @@
 import React from 'react';
 import { X, BookOpen, CheckCircle2, XCircle, Sparkles, Copy, Check } from 'lucide-react';
-import { CHEAT_SHEET_ITEMS } from '../../data/cheatSheetData';
 import { useProgress } from '../../context/ProgressContext';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface CheatSheetModalProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface CheatSheetModalProps {
 
 export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClose }) => {
   const { playTone } = useProgress();
+  const { t } = useLanguage();
   const [copiedIndex, setCopiedIndex] = React.useState<number | null>(null);
 
   if (!isOpen) return null;
@@ -36,10 +37,10 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
             </div>
             <div>
               <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                React useState Pro Cheat Sheet
+                {t.cheatSheetModal.title}
                 <Sparkles className="w-4 h-4 text-amber-400" />
               </h2>
-              <p className="text-xs text-slate-400">Essential rules, immutable patterns, and pro-tips for React state</p>
+              <p className="text-xs text-slate-400">{t.cheatSheetModal.subtitle}</p>
             </div>
           </div>
           <button
@@ -55,11 +56,13 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
 
         {/* Modal Content */}
         <div className="p-6 overflow-y-auto space-y-6 flex-1 text-sm">
-          {CHEAT_SHEET_ITEMS.map((item, idx) => (
+          {t.cheatSheet.map((item, idx) => (
             <div key={idx} className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-bold text-cyan-300 text-base">{item.category}</h3>
-                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">Rule #{idx + 1}</span>
+                <span className="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono">
+                  {t.cheatSheetModal.ruleNumber}{idx + 1}
+                </span>
               </div>
               <p className="text-slate-300 text-xs md:text-sm font-medium">{item.rule}</p>
 
@@ -69,9 +72,9 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
                 <div className="p-3 rounded-lg bg-rose-950/20 border border-rose-900/40">
                   <div className="flex items-center gap-1.5 text-rose-400 text-xs font-bold mb-2">
                     <XCircle className="w-4 h-4" />
-                    <span>DON'T (Anti-pattern)</span>
+                    <span>{t.cheatSheetModal.dont}</span>
                   </div>
-                  <pre className="font-mono text-xs text-rose-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto">
+                  <pre className="font-mono text-xs text-rose-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto" dir="ltr">
                     {item.dontCode}
                   </pre>
                 </div>
@@ -81,7 +84,7 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-1.5 text-emerald-400 text-xs font-bold">
                       <CheckCircle2 className="w-4 h-4" />
-                      <span>DO (Recommended)</span>
+                      <span>{t.cheatSheetModal.do}</span>
                     </div>
                     <button
                       onClick={() => handleCopyCode(item.doCode, idx)}
@@ -90,24 +93,24 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
                       {copiedIndex === idx ? (
                         <>
                           <Check className="w-3 h-3 text-emerald-400" />
-                          <span>Copied</span>
+                          <span>{t.cheatSheetModal.copied}</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-3 h-3" />
-                          <span>Copy</span>
+                          <span>{t.cheatSheetModal.copy}</span>
                         </>
                       )}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-emerald-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto">
+                  <pre className="font-mono text-xs text-emerald-200/90 whitespace-pre-wrap leading-relaxed overflow-x-auto" dir="ltr">
                     {item.doCode}
                   </pre>
                 </div>
               </div>
 
               <p className="text-xs text-slate-400 italic pt-1">
-                💡 <span className="font-semibold text-slate-300">Why:</span> {item.explanation}
+                💡 <span className="font-semibold text-slate-300">{t.cheatSheetModal.why}</span> {item.explanation}
               </p>
             </div>
           ))}
@@ -115,7 +118,7 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
 
         {/* Modal Footer */}
         <div className="px-6 py-3 border-t border-slate-800 bg-slate-950 flex items-center justify-between text-xs text-slate-400">
-          <span>Tip: Press ESC or click Close to return to the interactive guide</span>
+          <span>{t.cheatSheetModal.closeTip}</span>
           <button
             onClick={() => {
               playTone('click');
@@ -123,7 +126,7 @@ export const CheatSheetModal: React.FC<CheatSheetModalProps> = ({ isOpen, onClos
             }}
             className="px-4 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold transition-colors"
           >
-            Got it!
+            {t.cheatSheetModal.gotIt}
           </button>
         </div>
       </div>
