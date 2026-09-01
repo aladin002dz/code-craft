@@ -24,6 +24,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['Space Grotesk', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['Fira Code', 'JetBrains Mono', 'Consolas', 'monospace'],
       },
       keyframes: {
