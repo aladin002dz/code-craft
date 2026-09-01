@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import type { ChapterId } from '../types';
 
 interface ProgressContextType {
@@ -67,13 +67,25 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setCompletedChapters([]);
   }, []);
 
-  // Web Audio API synthesized tones
+  // Web Audio API synthesized tones — a single AudioContext is created lazily
+  // and reused for the app's lifetime instead of spawning a new one per tone
+  // (browsers cap the number of concurrent contexts, which was throwing
+  // "AudioContext encountered an error" once several piled up unclosed).
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
   const playTone = useCallback((type: 'click' | 'render' | 'success' | 'error' | 'step') => {
     if (!soundEnabled) return;
     try {
       const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AudioContextClass) return;
-      const ctx = new AudioContextClass();
+
+      if (!audioCtxRef.current) {
+        audioCtxRef.current = new AudioContextClass();
+      }
+      const ctx = audioCtxRef.current;
+      if (ctx.state === 'suspended') {
+        void ctx.resume();
+      }
 
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
@@ -128,6 +140,12 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       // Audio context may be blocked by autoplay policies
     }
   }, [soundEnabled]);
+
+  useEffect(() => {
+    return () => {
+      audioCtxRef.current?.close().catch(() => {});
+    };
+  }, []);
 
   const progressPercentage = Math.round((completedChapters.length / TOTAL_CHAPTERS) * 100);
 
