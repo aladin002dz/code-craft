@@ -1,5 +1,8 @@
 export type Language = 'en' | 'fr' | 'ar';
 
+/** Top-level app view: the roadmap/landing page, or the chapter-based course. */
+export type AppView = 'landing' | 'course';
+
 export type ChapterId = 
   | 'why-state'
   | 'anatomy'

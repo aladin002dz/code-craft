@@ -10,6 +10,19 @@ export const TRANSLATIONS: Record<Language, {
     cheatSheet: string;
     moduleSelect: string;
     langName: string;
+    home: string;
+  };
+  landing: {
+    eyebrow: string;
+    title: string;
+    titleAccent: string;
+    subtitle: string;
+    ctaStart: string;
+    ctaContinue: string;
+    progressSuffix: string;
+    roadmapEyebrow: string;
+    roadmapTitle: string;
+    roadmapSubtitle: string;
   };
   footer: {
     prev: string;
@@ -305,6 +318,19 @@ export const TRANSLATIONS: Record<Language, {
       cheatSheet: 'Cheat Sheet',
       moduleSelect: 'Select Module',
       langName: 'English',
+      home: 'Roadmap',
+    },
+    landing: {
+      eyebrow: 'Interactive Guide',
+      title: 'Learn React State,',
+      titleAccent: 'the deep way.',
+      subtitle: "A visual, hands-on roadmap through React's useState — from mental models to Fiber internals. Seven modules, interactive labs, and a mastery quiz.",
+      ctaStart: 'Start the Course',
+      ctaContinue: 'Continue the Course',
+      progressSuffix: 'complete',
+      roadmapEyebrow: 'Roadmap',
+      roadmapTitle: '7 modules to mastery',
+      roadmapSubtitle: 'Follow them in order, or jump straight to any module.',
     },
     footer: {
       prev: 'Previous',
@@ -764,6 +790,19 @@ export const TRANSLATIONS: Record<Language, {
       cheatSheet: 'Aide-mémoire',
       moduleSelect: 'Sélectionner un module',
       langName: 'Français',
+      home: 'Feuille de route',
+    },
+    landing: {
+      eyebrow: 'Guide interactif',
+      title: 'Apprenez le state React,',
+      titleAccent: 'en profondeur.',
+      subtitle: "Un parcours visuel et pratique à travers useState — des modèles mentaux aux mécanismes internes de Fiber. Sept modules, des laboratoires interactifs et un quiz de maîtrise.",
+      ctaStart: 'Commencer le cours',
+      ctaContinue: 'Continuer le cours',
+      progressSuffix: 'complété',
+      roadmapEyebrow: 'Feuille de route',
+      roadmapTitle: '7 modules vers la maîtrise',
+      roadmapSubtitle: "Suivez-les dans l'ordre, ou passez directement à un module.",
     },
     footer: {
       prev: 'Précédent',
@@ -1223,6 +1262,19 @@ export const TRANSLATIONS: Record<Language, {
       cheatSheet: 'ورقة الملاحظات',
       moduleSelect: 'اختر الوحدة',
       langName: 'العربية',
+      home: 'خارطة الطريق',
+    },
+    landing: {
+      eyebrow: 'دليل تفاعلي',
+      title: 'تعلّم حالة React،',
+      titleAccent: 'بعمق.',
+      subtitle: 'رحلة مرئية وعملية عبر useState — من النماذج الذهنية إلى آليات Fiber الداخلية. سبع وحدات، ومختبرات تفاعلية، واختبار إتقان.',
+      ctaStart: 'ابدأ الدورة',
+      ctaContinue: 'متابعة الدورة',
+      progressSuffix: 'مكتمل',
+      roadmapEyebrow: 'خارطة الطريق',
+      roadmapTitle: '7 وحدات نحو الإتقان',
+      roadmapSubtitle: 'اتبعها بالترتيب، أو انتقل مباشرة إلى أي وحدة.',
     },
     footer: {
       prev: 'السابق',

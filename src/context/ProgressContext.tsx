@@ -1,7 +1,9 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import type { ChapterId } from '../types';
+import type { AppView, ChapterId } from '../types';
 
 interface ProgressContextType {
+  view: AppView;
+  setView: (view: AppView) => void;
   currentChapter: ChapterId;
   setCurrentChapter: (id: ChapterId) => void;
   completedChapters: string[];
@@ -31,6 +33,27 @@ const VALID_CHAPTER_IDS: ChapterId[] = [
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Defaults to the roadmap/landing page for first-time visitors; once a
+  // visitor opens the course, that choice is persisted so a reload doesn't
+  // punt them back to the landing page mid-course.
+  const [view, setViewState] = useState<AppView>(() => {
+    try {
+      const saved = localStorage.getItem('usestate_view');
+      return saved === 'course' ? 'course' : 'landing';
+    } catch {
+      return 'landing';
+    }
+  });
+
+  const setView = useCallback((next: AppView) => {
+    setViewState(next);
+    try {
+      localStorage.setItem('usestate_view', next);
+    } catch (e) {
+      console.warn('Could not persist view to localStorage', e);
+    }
+  }, []);
+
   const [currentChapter, setCurrentChapterState] = useState<ChapterId>(() => {
     try {
       const saved = localStorage.getItem('usestate_current_chapter');
@@ -182,6 +205,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <ProgressContext.Provider
       value={{
+        view,
+        setView,
         currentChapter,
         setCurrentChapter,
         completedChapters,
