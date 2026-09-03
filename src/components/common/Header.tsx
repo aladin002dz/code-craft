@@ -60,7 +60,12 @@ export const Header: React.FC = () => {
           <div className="flex items-center justify-between h-16">
 
             {/* Left Brand Logo */}
-            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => handleSelectChapter('why-state')}>
+            <button
+              type="button"
+              className="flex items-center gap-2.5 cursor-pointer text-left rtl:text-right bg-transparent border-0 p-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 rounded"
+              onClick={handleGoHome}
+              aria-label={t.header.home}
+            >
               <Braces className="w-5 h-5 text-cyan-400" strokeWidth={2.25} />
               <div>
                 <div className="flex items-center gap-2">
@@ -75,7 +80,7 @@ export const Header: React.FC = () => {
                   {t.header.brandSubtitle}
                 </p>
               </div>
-            </div>
+            </button>
 
             {/* Middle Progress Overview (Desktop) */}
             <div className="hidden lg:flex items-center gap-3 text-xs">
@@ -89,7 +94,7 @@ export const Header: React.FC = () => {
               <span className="font-mono font-semibold text-slate-300">
                 {completedChapters.length}/{t.chapters.length}
               </span>
-              <div className="flex items-center gap-1 pl-3 ml-1 border-l border-slate-800">
+              <div className="flex items-center gap-1 pl-3 ml-1 border-l rtl:pl-0 rtl:ml-0 rtl:border-l-0 rtl:pr-3 rtl:mr-1 rtl:border-r border-slate-800">
                 {t.chapters.map((chap) => {
                   const unlocked = isChapterCompleted(chap.id);
                   const colors = getChapterColorClasses(chap.color);

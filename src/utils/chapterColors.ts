@@ -11,7 +11,8 @@
  * gradients or filled pills. See the "editorial/technical" design direction.
  */
 
-export type ChapterColor = 'cyan' | 'purple' | 'indigo' | 'teal' | 'emerald' | 'amber' | 'rose';
+import type { ChapterColor } from '../types';
+export type { ChapterColor };
 
 interface ChapterColorClasses {
   /** Accent text color — active nav tab, floating-button label, progress bar aria. */

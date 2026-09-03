@@ -4,7 +4,7 @@ import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { LanguageSwitcher } from '../common/LanguageSwitcher';
 import { Card } from '../common/Card';
-import { getChapterColorClasses, type ChapterColor } from '../../utils/chapterColors';
+import { Badge } from '../common/Badge';
 import type { ChapterId } from '../../types';
 
 /**
@@ -30,9 +30,9 @@ export const LandingPage: React.FC = () => {
 
   const hasProgress = completedChapters.length > 0;
 
-  const openCourse = (chapterId?: ChapterId) => {
+  const openCourse = (chapterId: ChapterId = 'why-state') => {
     playTone('click');
-    if (chapterId) setCurrentChapter(chapterId);
+    setCurrentChapter(chapterId);
     setView('course');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -48,7 +48,7 @@ export const LandingPage: React.FC = () => {
               React<span className="text-slate-600">.</span><span className="text-cyan-400">useState</span>
             </span>
           </div>
-          <LanguageSwitcher />
+          <LanguageSwitcher onChange={() => playTone('click')} />
         </div>
       </header>
 
@@ -68,7 +68,7 @@ export const LandingPage: React.FC = () => {
 
           <div className="mt-8 flex flex-col items-center gap-3">
             <button
-              onClick={() => openCourse(hasProgress ? currentChapter : undefined)}
+              onClick={() => openCourse(hasProgress ? currentChapter : 'why-state')}
               className="flex items-center gap-2 px-6 py-3 rounded-md font-semibold text-sm bg-cyan-500 text-slate-950 hover:bg-cyan-400 transition-colors"
             >
               <Rocket className="w-4 h-4" />
@@ -96,7 +96,6 @@ export const LandingPage: React.FC = () => {
 
           <div className="space-y-3">
             {t.chapters.map((chap) => {
-              const colors = getChapterColorClasses(chap.color);
               const completed = isChapterCompleted(chap.id);
 
               return (
@@ -105,7 +104,7 @@ export const LandingPage: React.FC = () => {
                   onClick={() => openCourse(chap.id)}
                   className="w-full text-left rtl:text-right rounded-lg focus:outline-none focus-visible:ring-1 focus-visible:ring-slate-600"
                 >
-                  <Card accent={chap.color as ChapterColor} className="hover:border-slate-700 transition-colors">
+                  <Card accent={chap.color}>
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3">
                         <span className="font-mono text-xs text-slate-600 mt-0.5 w-5 shrink-0">
@@ -113,12 +112,10 @@ export const LandingPage: React.FC = () => {
                         </span>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-[11px] font-semibold uppercase tracking-wider ${colors.text}`}>
-                              {chap.badge}
-                            </span>
+                            <Badge variant={chap.color}>{chap.badge}</Badge>
                             <span className="text-[11px] text-slate-600">· {chap.readTime}</span>
                           </div>
-                          <h3 className="text-sm font-semibold text-slate-100">{chap.title}</h3>
+                          <div className="text-sm font-semibold text-slate-100">{chap.title}</div>
                           <p className="text-xs text-slate-500 mt-0.5">{chap.subtitle}</p>
                         </div>
                       </div>

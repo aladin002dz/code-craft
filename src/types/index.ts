@@ -12,6 +12,8 @@ export type ChapterId =
   | 'interactive-labs'
   | 'quiz';
 
+export type ChapterColor = 'cyan' | 'purple' | 'indigo' | 'teal' | 'emerald' | 'amber' | 'rose';
+ 
 export interface Chapter {
   id: ChapterId;
   number: number;
@@ -19,7 +21,7 @@ export interface Chapter {
   shortTitle: string;
   subtitle: string;
   badge: string;
-  color: string;
+  color: ChapterColor;
   readTime: string;
 }
 

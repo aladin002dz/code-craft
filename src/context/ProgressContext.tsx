@@ -6,7 +6,7 @@ interface ProgressContextType {
   setView: (view: AppView) => void;
   currentChapter: ChapterId;
   setCurrentChapter: (id: ChapterId) => void;
-  completedChapters: string[];
+  completedChapters: ChapterId[];
   markChapterCompleted: (id: ChapterId) => void;
   isChapterCompleted: (id: ChapterId) => boolean;
   renderFlashEnabled: boolean;
@@ -18,8 +18,6 @@ interface ProgressContextType {
   progressPercentage: number;
 }
 
-const TOTAL_CHAPTERS = 7;
-
 const VALID_CHAPTER_IDS: ChapterId[] = [
   'why-state',
   'anatomy',
@@ -29,6 +27,8 @@ const VALID_CHAPTER_IDS: ChapterId[] = [
   'interactive-labs',
   'quiz',
 ];
+
+const TOTAL_CHAPTERS = VALID_CHAPTER_IDS.length;
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
@@ -75,10 +75,14 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.warn('Could not persist current chapter to localStorage', e);
     }
   }, []);
-  const [completedChapters, setCompletedChapters] = useState<string[]>(() => {
+  const [completedChapters, setCompletedChapters] = useState<ChapterId[]>(() => {
     try {
       const saved = localStorage.getItem('usestate_completed_chapters');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed)
+        ? (parsed as string[]).filter((id): id is ChapterId => VALID_CHAPTER_IDS.includes(id as ChapterId))
+        : [];
     } catch {
       return [];
     }
@@ -226,6 +230,7 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
+// oxlint-disable-next-line react/only-export-components
 export const useProgress = () => {
   const context = useContext(ProgressContext);
   if (!context) {

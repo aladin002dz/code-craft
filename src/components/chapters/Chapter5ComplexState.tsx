@@ -44,6 +44,7 @@ export const Chapter5ComplexState: React.FC = () => {
     playTone('error');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore - Demonstrating bug
+    // oxlint-disable-next-line react/immutability
     user.level += 1;
     user.role = 'Senior Frontend Engineer';
     // Passing the SAME object reference
