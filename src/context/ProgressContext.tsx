@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
-import type { ChapterId } from '../types';
+import type { AppView, ChapterId } from '../types';
 
 interface ProgressContextType {
+  view: AppView;
+  setView: (view: AppView) => void;
   currentChapter: ChapterId;
   setCurrentChapter: (id: ChapterId) => void;
-  completedChapters: string[];
+  completedChapters: ChapterId[];
   markChapterCompleted: (id: ChapterId) => void;
   isChapterCompleted: (id: ChapterId) => boolean;
   renderFlashEnabled: boolean;
@@ -16,8 +18,6 @@ interface ProgressContextType {
   progressPercentage: number;
 }
 
-const TOTAL_CHAPTERS = 7;
-
 const VALID_CHAPTER_IDS: ChapterId[] = [
   'why-state',
   'anatomy',
@@ -28,9 +28,32 @@ const VALID_CHAPTER_IDS: ChapterId[] = [
   'quiz',
 ];
 
+const TOTAL_CHAPTERS = VALID_CHAPTER_IDS.length;
+
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Defaults to the roadmap/landing page for first-time visitors; once a
+  // visitor opens the course, that choice is persisted so a reload doesn't
+  // punt them back to the landing page mid-course.
+  const [view, setViewState] = useState<AppView>(() => {
+    try {
+      const saved = localStorage.getItem('usestate_view');
+      return saved === 'course' ? 'course' : 'landing';
+    } catch {
+      return 'landing';
+    }
+  });
+
+  const setView = useCallback((next: AppView) => {
+    setViewState(next);
+    try {
+      localStorage.setItem('usestate_view', next);
+    } catch (e) {
+      console.warn('Could not persist view to localStorage', e);
+    }
+  }, []);
+
   const [currentChapter, setCurrentChapterState] = useState<ChapterId>(() => {
     try {
       const saved = localStorage.getItem('usestate_current_chapter');
@@ -52,10 +75,14 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.warn('Could not persist current chapter to localStorage', e);
     }
   }, []);
-  const [completedChapters, setCompletedChapters] = useState<string[]>(() => {
+  const [completedChapters, setCompletedChapters] = useState<ChapterId[]>(() => {
     try {
       const saved = localStorage.getItem('usestate_completed_chapters');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      return Array.isArray(parsed)
+        ? (parsed as string[]).filter((id): id is ChapterId => VALID_CHAPTER_IDS.includes(id as ChapterId))
+        : [];
     } catch {
       return [];
     }
@@ -182,6 +209,8 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <ProgressContext.Provider
       value={{
+        view,
+        setView,
         currentChapter,
         setCurrentChapter,
         completedChapters,
@@ -201,6 +230,7 @@ export const ProgressProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   );
 };
 
+// oxlint-disable-next-line react/only-export-components
 export const useProgress = () => {
   const context = useContext(ProgressContext);
   if (!context) {

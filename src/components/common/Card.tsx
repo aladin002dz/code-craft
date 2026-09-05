@@ -34,7 +34,9 @@ export const Card: React.FC<CardProps> = ({
   return (
     <div
       className={`relative rounded-lg border border-slate-800 bg-slate-900/40 p-6 transition-colors duration-200 hover:border-slate-700 ${
-        accent !== 'none' ? `pl-[calc(1.5rem+2px)] before:absolute before:inset-y-0 before:left-0 before:w-[2px] before:rounded-l-lg rtl:before:left-auto rtl:before:right-0 ${accentStyles[accent]}` : ''
+        accent !== 'none'
+          ? `pl-[calc(1.5rem+2px)] rtl:pl-6 rtl:pr-[calc(1.5rem+2px)] before:absolute before:inset-y-0 before:left-0 before:w-[2px] before:rounded-l-lg rtl:before:left-auto rtl:before:right-0 rtl:before:rounded-l-none rtl:before:rounded-r-lg ${accentStyles[accent]}`
+          : ''
       } ${className}`}
     >
       {(title || icon || badge) && (

@@ -1,5 +1,8 @@
 export type Language = 'en' | 'fr' | 'ar';
 
+/** Top-level app view: the roadmap/landing page, or the chapter-based course. */
+export type AppView = 'landing' | 'course';
+
 export type ChapterId = 
   | 'why-state'
   | 'anatomy'
@@ -9,6 +12,8 @@ export type ChapterId =
   | 'interactive-labs'
   | 'quiz';
 
+export type ChapterColor = 'cyan' | 'purple' | 'indigo' | 'teal' | 'emerald' | 'amber' | 'rose';
+ 
 export interface Chapter {
   id: ChapterId;
   number: number;
@@ -16,7 +21,7 @@ export interface Chapter {
   shortTitle: string;
   subtitle: string;
   badge: string;
-  color: string;
+  color: ChapterColor;
   readTime: string;
 }
 

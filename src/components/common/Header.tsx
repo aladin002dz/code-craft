@@ -9,20 +9,22 @@ import {
   CheckCircle2,
   Menu,
   X,
-  Languages,
+  Home,
   Award
 } from 'lucide-react';
 import { useProgress } from '../../context/ProgressContext';
 import { useLanguage } from '../../context/LanguageContext';
-import type { ChapterId, Language } from '../../types';
+import type { ChapterId } from '../../types';
 import { CheatSheetModal } from './CheatSheetModal';
 import { ScrollProgressBar } from './ScrollProgressBar';
+import { LanguageSwitcher } from './LanguageSwitcher';
 import { getChapterColorClasses } from '../../utils/chapterColors';
 
 export const Header: React.FC = () => {
   const {
     currentChapter,
     setCurrentChapter,
+    setView,
     isChapterCompleted,
     renderFlashEnabled,
     toggleRenderFlash,
@@ -33,10 +35,9 @@ export const Header: React.FC = () => {
     completedChapters
   } = useProgress();
 
-  const { language, setLanguage, t } = useLanguage();
+  const { t } = useLanguage();
   const [isCheatSheetOpen, setIsCheatSheetOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
 
   const handleSelectChapter = (id: ChapterId) => {
     playTone('click');
@@ -45,17 +46,11 @@ export const Header: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleLanguageChange = (lang: Language) => {
+  const handleGoHome = () => {
     playTone('click');
-    setLanguage(lang);
-    setIsLangDropdownOpen(false);
+    setView('landing');
+    setIsMobileMenuOpen(false);
   };
-
-  const languagesList: { code: Language; label: string; flag: string }[] = [
-    { code: 'en', label: 'English', flag: '🇺🇸' },
-    { code: 'fr', label: 'Français', flag: '🇫🇷' },
-    { code: 'ar', label: 'العربية', flag: '🇸🇦' },
-  ];
 
   return (
     <>
@@ -65,7 +60,12 @@ export const Header: React.FC = () => {
           <div className="flex items-center justify-between h-16">
 
             {/* Left Brand Logo */}
-            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => handleSelectChapter('why-state')}>
+            <button
+              type="button"
+              className="flex items-center gap-2.5 cursor-pointer text-left rtl:text-right bg-transparent border-0 p-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-cyan-500 rounded"
+              onClick={handleGoHome}
+              aria-label={t.header.home}
+            >
               <Braces className="w-5 h-5 text-cyan-400" strokeWidth={2.25} />
               <div>
                 <div className="flex items-center gap-2">
@@ -80,7 +80,7 @@ export const Header: React.FC = () => {
                   {t.header.brandSubtitle}
                 </p>
               </div>
-            </div>
+            </button>
 
             {/* Middle Progress Overview (Desktop) */}
             <div className="hidden lg:flex items-center gap-3 text-xs">
@@ -94,7 +94,7 @@ export const Header: React.FC = () => {
               <span className="font-mono font-semibold text-slate-300">
                 {completedChapters.length}/{t.chapters.length}
               </span>
-              <div className="flex items-center gap-1 pl-3 ml-1 border-l border-slate-800">
+              <div className="flex items-center gap-1 pl-3 ml-1 border-l rtl:pl-0 rtl:ml-0 rtl:border-l-0 rtl:pr-3 rtl:mr-1 rtl:border-r border-slate-800">
                 {t.chapters.map((chap) => {
                   const unlocked = isChapterCompleted(chap.id);
                   const colors = getChapterColorClasses(chap.color);
@@ -116,42 +116,18 @@ export const Header: React.FC = () => {
             {/* Right Quick Controls */}
             <div className="flex items-center gap-1.5">
 
-              {/* Language Switcher Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsLangDropdownOpen(!isLangDropdownOpen)}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700 text-xs font-medium transition-colors"
-                  title="Switch Language / Changer de langue / تغيير اللغة"
-                  aria-label="Switch Language / Changer de langue / تغيير اللغة"
-                  aria-haspopup="menu"
-                  aria-expanded={isLangDropdownOpen}
-                >
-                  <Languages className="w-3.5 h-3.5" />
-                  <span className="uppercase font-mono">{language}</span>
-                </button>
+              {/* Back to Roadmap / Landing */}
+              <button
+                onClick={handleGoHome}
+                className="p-1.5 rounded-md border border-slate-800 text-slate-400 hover:text-slate-200 hover:border-slate-700 transition-colors"
+                title={t.header.home}
+                aria-label={t.header.home}
+              >
+                <Home className="w-3.5 h-3.5" />
+              </button>
 
-                {isLangDropdownOpen && (
-                  <div className="absolute right-0 rtl:right-auto rtl:left-0 mt-2 w-36 rounded-md bg-slate-900 border border-slate-800 shadow-lg p-1 z-50 animate-fadeIn">
-                    {languagesList.map((langItem) => (
-                      <button
-                        key={langItem.code}
-                        onClick={() => handleLanguageChange(langItem.code)}
-                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded text-xs font-medium transition-colors ${
-                          language === langItem.code
-                            ? 'text-cyan-400'
-                            : 'text-slate-300 hover:bg-slate-800'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          <span>{langItem.flag}</span>
-                          <span>{langItem.label}</span>
-                        </span>
-                        {language === langItem.code && <span>✓</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              {/* Language Switcher Dropdown */}
+              <LanguageSwitcher onChange={() => playTone('click')} />
 
               {/* Render Flash Toggle */}
               <button
